@@ -9,9 +9,11 @@ namespace yuxuetian.tools.shaderReference
     
     public class ShaderReferenceEditorWindow : EditorWindow
     {
-        public bool isFold_ApplicationStage;
-        public bool isFold_GeometryStage;
-        public bool isFold_RasterizerStage;
+        public bool isFold_ApplicationStage = true;
+        public bool isFold_GeometryStage = true;
+        public bool isFold_RasterizerStage = true;
+        public bool isFold_Property = true;
+        public bool isFold_Attribute = true;
 
         private Vector2 scrollpos;
         private string[] tabName = new string[]{"Pipeline", "Property"};
@@ -49,6 +51,19 @@ namespace yuxuetian.tools.shaderReference
             EditorGUILayout.EndHorizontal();
         }
 
+        void OnEnable()
+        {
+            selectedTabID = EditorPrefs.HasKey("yuxuetian_SelectedTabID") ? EditorPrefs.GetInt("yuxuetian_SelectedTabID") : 0;
+            
+            pipline = ScriptableObject.CreateInstance<ShaderReferencePipeline>();
+            property = ScriptableObject.CreateInstance<ShaderReferenceProperty>();
+        }
+
+        void OnDisable()
+        {
+            EditorPrefs.SetInt("yuxuetian_SelectedTabID", selectedTabID);
+        }
+
         void DrawMainUI(int selectedTabID)
         {
             switch (selectedTabID)
@@ -72,7 +87,14 @@ namespace yuxuetian.tools.shaderReference
                     EditorGUILayout.EndScrollView();
                     break;
                 case 1:
-                    property.DrawMainGUI();
+                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    property.DrawTitleProperty();
+                    isFold_Property = EditorGUILayout.Foldout(isFold_Property, "属性");
+                    property.DrawContentProperty(isFold_Property);
+                    property.DrawTitleAttribute();
+                    isFold_Attribute = EditorGUILayout.Foldout(isFold_Attribute, "属性性质");
+                    property.DrawContentAttribute(isFold_Attribute);
+                    EditorGUILayout.EndScrollView();
                     break;
             }
         }

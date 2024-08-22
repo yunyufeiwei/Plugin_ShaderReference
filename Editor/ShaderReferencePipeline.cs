@@ -9,8 +9,6 @@ namespace yuxuetian.tools.shaderReference
     {
         private ShaderReferenceUtil referencr = new ShaderReferenceUtil();
 
-        private Vector2 scrollPos;
-        
         public void DrawTitleApplicationStage()
         {
             referencr.DrawTitle("应用程序阶段（Application Stage）");
