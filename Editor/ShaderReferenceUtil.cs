@@ -13,6 +13,7 @@ namespace yuxuetian.tools.shaderReference
             //str是显示在按钮上面的内容，address是打开的一个相关的链接(可以不填)，如果第二个参数没有输入，则点击没有网页跳转功能
             if (GUILayout.Button(str))
             {
+                //如果第二个参数为空(也就是没有填)，则点击按钮没有链接跳转，直接返回。
                 if (address == null)
                 {
                     return;
@@ -66,7 +67,7 @@ namespace yuxuetian.tools.shaderReference
             }
         }
 
-        //用来显示垂直内容的背景样式
+        //用来显示垂直内容的背景样式，就是将Content里面的内容用一个box的背景框内。
         private GUIStyle style03;
 
         private GUIStyle Style03

@@ -31,11 +31,15 @@ namespace yuxuetian.tools.shaderReference
         private bool isFold_TagPerformanceChecks = true;
 
         private bool isFold_RenderStateCull = true;
+        private bool isFold_RenderStateStencilTest = true;
+        private bool isFold_RenderStateDepthTest = true;
+        private bool isFold_RenderStateColorMask = true;
+        private bool isFold_RenderStateBlend = true;
         #endregion
         
 
         private Vector2 scrollpos;
-        private string[] tabName = new string[]{"Pipeline(渲染管线)", "Property(属性)" , "_Semantics(语义)","Tags(标签)","Render State(渲染状态)"};
+        private string[] tabName = new string[]{"Pipeline(渲染管线)", "Property(属性)" , "Semantics(语义)","Tags(标签)","Render State(渲染状态)"};
         private int selectedTabID;  
         
         private ShaderReferencePipeline _pipeline;
@@ -193,6 +197,25 @@ namespace yuxuetian.tools.shaderReference
                     _renderState.DrawTitleCull();
                     isFold_RenderStateCull = EditorGUILayout.Foldout(isFold_RenderStateCull, "Cull");
                     _renderState.DrawContentCull(isFold_RenderStateCull);
+                    
+                    _renderState.DrawTitleStencilTest();
+                    isFold_RenderStateStencilTest = EditorGUILayout.Foldout(isFold_RenderStateStencilTest, "Stencil Test");
+                    _renderState.DrawContentStencilTest(isFold_RenderStateStencilTest);
+                    
+                    _renderState.DrawTitleDepthTest();
+                    isFold_RenderStateDepthTest = EditorGUILayout.Foldout(isFold_RenderStateDepthTest, "Depth Test");
+                    _renderState.DrawContentDepthTest(isFold_RenderStateDepthTest);
+                    
+                    _renderState.DrawTitleColorMask();
+                    isFold_RenderStateColorMask = EditorGUILayout.Foldout(isFold_RenderStateColorMask, "ColorMask");
+                    _renderState.DrawContentColorMask(isFold_RenderStateColorMask);
+                    
+                    _renderState.DrawTitleBlend();
+                    isFold_RenderStateBlend = EditorGUILayout.Foldout(isFold_RenderStateBlend, "Blend");
+                    _renderState.DrawContentBlend(isFold_RenderStateBlend);
+                    
+                    _renderState.DrawTitleOther();
+                    _renderState.DrawContentOther();
                     
                     EditorGUILayout.EndScrollView();
                     break;

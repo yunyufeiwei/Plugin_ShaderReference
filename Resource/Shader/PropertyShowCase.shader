@@ -18,6 +18,7 @@ Shader "ShaderReference/PropertyShowCase"
         [KeywordEnum (Enum0, Enum1, Enum2, Enum3, Enum4, Enum5, Enum6, Enum7, Enum8)]_Enum2("Enmu2" , Integer) = 0
         [Enum (UnityEngine.Rendering.CullMode)]_Enum3("Enmu3" , Integer) = 0
         
+        [Enum(UnityEngine.Rendering.CullMode)]_Cull("Cull",Float) = 0
         [Space(20)]
         [HDR]_Color("Color",Color) = (1,1,1,1)
         _Vector("Vector",Vector) = (1,1,1,1)
