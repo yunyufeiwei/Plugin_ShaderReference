@@ -7,11 +7,21 @@ namespace yuxuetian.tools.shaderReference
 {
     public class ShaderReferenceUtil
     {
-        public void DrawTitle(string str)
+        //绘制标题的按钮，
+        public void DrawTitle(string str , string address = null)
         {
-            EditorGUILayout.LabelField(str, EditorStyles.miniButton);
+            //str是显示在按钮上面的内容，address是打开的一个相关的链接(可以不填)，如果第二个参数没有输入，则点击没有网页跳转功能
+            if (GUILayout.Button(str))
+            {
+                if (address == null)
+                {
+                    return;
+                }
+                Application.OpenURL(address);
+            }
         }
-
+        
+        //绘制具体的内容
         public void DrawContent(string str , string massage = null)
         {
             EditorGUILayout.BeginVertical(Style03);
@@ -47,6 +57,7 @@ namespace yuxuetian.tools.shaderReference
                 if (style02 == null)
                 {
                     style02 = new GUIStyle("label");
+                    style02.alignment = TextAnchor.MiddleLeft;
                     style02.wordWrap = true;
                     style02.richText = true;
                     style02.fontSize = 14;

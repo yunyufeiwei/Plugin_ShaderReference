@@ -53,6 +53,28 @@ namespace yuxuetian.tools.shaderReference
 
             }
         }
+
+        public void DrawTitleShaderLab()
+        {
+            referencr.DrawTitle("Shader Lab");
+        }
+
+        public void DrawContentShaderLab(bool isFold)
+        {
+            if (isFold)
+            {
+                referencr.DrawContent("Shader Lab","是Unity3D游戏引擎中用于编写Shader的语言，它不是一个独立的编程语言，而是一种结构化的语法，用于组织和配置Shader代码的各个部分.");
+                referencr.DrawContent("Property\n"+"{\n"+"}","该部分用来创建用于显示在面版上的属性.");
+                referencr.DrawContent("SubShader\n"+"{\n"+"}","每个Shader至少包含一个SubShader，它定义了一系列的通道（Pass），这些通道告诉Unity如何渲染物体，如果一个设备不支持第一个SubShader，Unity会尝试下一个SubShader，直到找到一个合适的.");
+                referencr.DrawContent("Pass\n" + "{\n" + "}" , "pass定义了实际的渲染步骤。每个Pass可以包含一段HLSL代码，这部分是实际的Shader程序，包括顶点和片元Shader.");
+                referencr.DrawContent("1.Attribute" , "将应用程序阶段的内容传递到顶点着色器中.");
+                referencr.DrawContent("2.Varyings(顶点着色器)","本地空间->(本地到世界空间矩阵)->世界空间->(世界到观察空间矩阵)->观察空间->(投影矩阵)->齐次裁剪空间.");
+                referencr.DrawContent("3.透视除法","齐次裁剪空间做透视除法(clip.xyzw/clip.w),变换到归一化设备坐标NDC.");
+                referencr.DrawContent("4.视口变换","从NDC坐标变换到屏幕坐标.");
+                referencr.DrawContent("5.frag(片段着色器)","用从顶点着色器的输出当做输入进行逐片段的颜色计算并输出.");
+                
+            }
+        }
     }
 }
 

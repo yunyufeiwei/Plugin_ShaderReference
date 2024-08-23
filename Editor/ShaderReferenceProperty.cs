@@ -42,13 +42,29 @@ namespace yuxuetian.tools.shaderReference
 
         public void DrawTitleAttribute()
         {
-            reference.DrawTitle("属性性质（Attribute）");
+            reference.DrawTitle("属性形式（Attribute）");
         }
         public void DrawContentAttribute(bool isFold)
         {
             if (isFold)
             {
-                
+                reference.DrawContent("[Header(xxx)]","用于在材质面板中当前属性的上方显示标题xxx，只支持英文、数字、空格以及下划线.");
+                reference.DrawContent("[HideInInspector]","用于在材质面板隐藏此条属性，在不希望暴露某条属性时，可以快速将其隐藏.");
+                reference.DrawContent("[Space(n)]", "用于材质面板之间的属性，是属性之间具有间隔，n为间隔的数值大小.");
+                reference.DrawContent("[HDR]","标记颜色属性为高动态范围.");
+                reference.DrawContent("[PowerSlider(3)]","滑条曲率,必须加在range属性前面，用于控制滑动的数值比例,数值前面的部分会在滑动条上占更多的比例.");
+                reference.DrawContent("[IntRange]","必须使用在Range属性之上，使材质面板中滑动条的数值只能生成整数.");
+                reference.DrawContent("[Toggle]" , "开关属性，加在数值类型前面，可以使材质面板中的数值变成开关，0是关，1是开.");
+                reference.DrawContent("[ToggleOff]","与Toggle相当，0是开，1是关.");
+                reference.DrawContent("[Enum(Off, 0, On, 1)]", "数值枚举,可直接在cg中使用此关键字来替代数字,最多可定义7个，超出后无法以下拉列表框的形式展现.");
+                reference.DrawContent("[KeywordEnum (Enum0, Enum1, Enum2, Enum3, Enum4, Enum5, Enum6, Enum7, Enum8)]", "关键字枚举,需要#pragma multi_compile _XXX_ENUM0 _XXX_ENUM1 ...来依次声明变体关键字,XXX为这条属性中声明的变量名,在cg/hlsl中可以通过#if #elif #endif分别做判断.");
+                reference.DrawContent("[Enum (UnityEngine.Rendering.CullMode)]", "内置枚举,可在Enum()内直接调用Unity内部的枚举.");
+                reference.DrawContent("[NoScaleOffset]", "只能加在纹理属性前，使其隐藏材质面板中的Tiling和Offset");
+                reference.DrawContent("[Normal]", "只能加在纹理属性前，标记此纹理是用来接收法线贴图的，当用户指定了非法线的纹理时会在材质面板上进行警告提示");
+                reference.DrawContent("[Gamma]", "Float和Vector属性默认情况下不会进行颜色空间转换，可以通过添加[Gamma]来指明此属性为sRGB值");
+                reference.DrawContent("[PerRendererData]", "标记当前属性将以材质属性块的形式来自于每个渲染器数据");
+                reference.DrawContent("[MainTexture]", "标记当前纹理为主纹理，便于C#通过Material.mainTexture调用");
+                reference.DrawContent("[MainColor]", "标记当前颜色为主颜色，便于C#通过Material.color调用");
             }
         }
     }
