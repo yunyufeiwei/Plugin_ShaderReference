@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -9,42 +6,44 @@ namespace yuxuetian.tools.shaderReference
     public class ShaderReferenceEditorWindow : EditorWindow
     {
         #region 折叠属性布尔值
-        private bool isFold_PipelineApplicationStage = true;
-        private bool isFold_PipelineGeometryStage = true;
-        private bool isFold_PipelineRasterizerStage = true;
-        private bool isFold_PipelineShaderLab = true;
+        private bool _isFoldPipelineApplicationStage = true;
+        private bool _isFoldPipelineGeometryStage = true;
+        private bool _isFoldPipelineRasterizerStage = true;
+        private bool _isFoldPipelineShaderLab = true;
         
-        private bool isFold_Property = true;
-        private bool isFold_PropertyAttribute = true;
+        private bool _isFoldProperty = true;
+        private bool _isFoldPropertyAttribute = true;
         
-        private bool isFold_SemanticsAttribute = true;
-        private bool isFold_SemanticsVaryings = true;
+        private bool _isFoldSemanticsAttribute = true;
+        private bool _isFoldSemanticsVaryings = true;
 
-        private bool isFold_TagQueue = true;
-        private bool isFold_TagRenderType = true;
-        private bool isFold_TagLightMode = true;
-        private bool isFold_TagDisableBatching = true;
-        private bool isFold_TagIgnoreProjector = true;
-        private bool isFold_TagForceNoShadowCasting = true;
-        private bool isFold_TagPreviewType = true;
-        private bool isFold_TagCanUseSpriteAtlas = true;
-        private bool isFold_TagPerformanceChecks = true;
+        private bool _isFoldTagQueue = true;
+        private bool _isFoldTagRenderType = true;
+        private bool _isFoldTagLightMode = true;
+        private bool _isFoldTagDisableBatching = true;
+        private bool _isFoldTagIgnoreProjector = true;
+        private bool _isFoldTagForceNoShadowCasting = true;
+        private bool _isFoldTagPreviewType = true;
+        private bool _isFoldTagCanUseSpriteAtlas = true;
+        private bool _isFoldTagPerformanceChecks = true;
 
-        private bool isFold_RenderStateCull = true;
-        private bool isFold_RenderStateStencilTest = true;
-        private bool isFold_RenderStateDepthTest = true;
-        private bool isFold_RenderStateColorMask = true;
-        private bool isFold_RenderStateBlend = true;
+        private bool _isFoldRenderStateCull = true;
+        private bool _isFoldRenderStateStencilTest = true;
+        private bool _isFoldRenderStateDepthTest = true;
+        private bool _isFoldRenderStateColorMask = true;
+        private bool _isFoldRenderStateBlend = true;
+
+        private bool _isFoldPragma = true;
         #endregion
         
-        private Vector2 scrollpos;
-        private int selectedTabID;  
-        private string[] tabName = new string[]{"Pipeline(渲染管线)", 
+        private Vector2 _scrollPos;
+        private int _selectedTabID;  
+        private string[] _tabName = new string[]{"Pipeline(渲染管线)", 
                                                 "Property(属性)" , 
                                                 "Semantics(语义)",
                                                 "Tags(标签)",
                                                 "Render State(渲染状态)",
-                                                "Compile Directive(编译指令)",
+                                                "Pragma(编译指令)",
                                                 "Transformation(变换)"};
        
         private ShaderReferencePipeline _pipeline;
@@ -52,7 +51,7 @@ namespace yuxuetian.tools.shaderReference
         private ShaderReferenceSemantics _semantics;
         private ShaderReferenceTags _tags;
         private ShaderReferenceRenderState _renderState;
-        private ShaderReferenceCompileDirective _compileDirective;
+        private ShaderReferencePragma _pragma;
         private ShaderReferenceTransformation _transformation;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
@@ -68,17 +67,17 @@ namespace yuxuetian.tools.shaderReference
             //绘制两块区域，左边用来描述分类，右边则显示不同分类下的具体内容
             EditorGUILayout.BeginHorizontal();
             
-            float _width = 170.0f;
-            float _height = position.height - 20;
+            float width = 170.0f;
+            float height = position.height - 20;
             
             //左侧区域绘制
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(_width) , GUILayout.MaxHeight(_height));
-            selectedTabID = GUILayout.SelectionGrid(selectedTabID, tabName, 1);            
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(width) , GUILayout.MaxHeight(height));
+            _selectedTabID = GUILayout.SelectionGrid(_selectedTabID, _tabName, 1);            
             EditorGUILayout.EndVertical();
 
             //右侧区域绘制
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MinWidth(position.width - _width), GUILayout.MinHeight(_height));
-            DrawMainUI(selectedTabID);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MinWidth(position.width - width), GUILayout.MinHeight(height));
+            DrawMainUI(_selectedTabID);
             EditorGUILayout.EndVertical();
             
             EditorGUILayout.EndHorizontal();
@@ -86,75 +85,75 @@ namespace yuxuetian.tools.shaderReference
 
         void OnEnable()
         {
-            selectedTabID = EditorPrefs.HasKey("yuxuetian_SelectedTabID") ? EditorPrefs.GetInt("yuxuetian_SelectedTabID") : 0;
+            _selectedTabID = EditorPrefs.HasKey("yuxuetian_SelectedTabID") ? EditorPrefs.GetInt("yuxuetian_SelectedTabID") : 0;
             
             _pipeline = ScriptableObject.CreateInstance<ShaderReferencePipeline>();
             _property = ScriptableObject.CreateInstance<ShaderReferenceProperty>();
             _semantics = ScriptableObject.CreateInstance<ShaderReferenceSemantics>();
             _tags = ScriptableObject.CreateInstance<ShaderReferenceTags>();
             _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
-            _compileDirective = ScriptableObject.CreateInstance<ShaderReferenceCompileDirective>();
+            _pragma = ScriptableObject.CreateInstance<ShaderReferencePragma>();
             _transformation = ScriptableObject.CreateInstance<ShaderReferenceTransformation>();
         }
 
         void OnDisable()
         {
-            EditorPrefs.SetInt("yuxuetian_SelectedTabID", selectedTabID);
+            EditorPrefs.SetInt("yuxuetian_SelectedTabID", _selectedTabID);
         }
 
-        void DrawMainUI(int selectedTabID)
+        void DrawMainUI(int _selectedTabID)
         {
-            switch (selectedTabID)
+            switch (_selectedTabID)
             {
                 case 0:
                     //滑动条
-                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _pipeline.DrawTitleApplicationStage();
-                    isFold_PipelineApplicationStage = EditorGUILayout.Foldout(isFold_PipelineApplicationStage, "应用程序阶段");
-                    _pipeline.DrawContentApplicationStage(isFold_PipelineApplicationStage);
+                    _isFoldPipelineApplicationStage = EditorGUILayout.Foldout(_isFoldPipelineApplicationStage, "应用程序阶段");
+                    _pipeline.DrawContentApplicationStage(_isFoldPipelineApplicationStage);
                     
                     _pipeline.DrawTitleGeometryStage();
-                    isFold_PipelineGeometryStage = EditorGUILayout.Foldout(isFold_PipelineGeometryStage, "几何阶段");
-                    _pipeline.DrawContentGeometryStage(isFold_PipelineGeometryStage);
+                    _isFoldPipelineGeometryStage = EditorGUILayout.Foldout(_isFoldPipelineGeometryStage, "几何阶段");
+                    _pipeline.DrawContentGeometryStage(_isFoldPipelineGeometryStage);
                     
                     _pipeline.DrawTitleResterizerStage();
-                    isFold_PipelineRasterizerStage = EditorGUILayout.Foldout(isFold_PipelineRasterizerStage, "光栅化阶段");
-                    _pipeline.DrawContentResterizerStage(isFold_PipelineRasterizerStage);
+                    _isFoldPipelineRasterizerStage = EditorGUILayout.Foldout(_isFoldPipelineRasterizerStage, "光栅化阶段");
+                    _pipeline.DrawContentResterizerStage(_isFoldPipelineRasterizerStage);
                     
                     _pipeline.DrawTitleShaderLab();
-                    isFold_PipelineShaderLab = EditorGUILayout.Foldout(isFold_PipelineShaderLab, "Shader Lab");
-                    _pipeline.DrawContentShaderLab(isFold_PipelineShaderLab);
+                    _isFoldPipelineShaderLab = EditorGUILayout.Foldout(_isFoldPipelineShaderLab, "Shader Lab");
+                    _pipeline.DrawContentShaderLab(_isFoldPipelineShaderLab);
                     
                     EditorGUILayout.EndScrollView();
                     break;
                 case 1:
-                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _property.DrawTitleProperty();
-                    isFold_Property = EditorGUILayout.Foldout(isFold_Property, "属性");
-                    _property.DrawContentProperty(isFold_Property);
+                    _isFoldProperty = EditorGUILayout.Foldout(_isFoldProperty, "属性");
+                    _property.DrawContentProperty(_isFoldProperty);
                     
                     _property.DrawTitleAttribute();
-                    isFold_PropertyAttribute = EditorGUILayout.Foldout(isFold_PropertyAttribute, "属性形式");
-                    _property.DrawContentAttribute(isFold_PropertyAttribute);
+                    _isFoldPropertyAttribute = EditorGUILayout.Foldout(_isFoldPropertyAttribute, "属性形式");
+                    _property.DrawContentAttribute(_isFoldPropertyAttribute);
                     
                     EditorGUILayout.EndScrollView();
                     break;
                 case 2:
-                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     _semantics.DrawTitleAttribute();
-                    isFold_SemanticsAttribute = EditorGUILayout.Foldout(isFold_SemanticsAttribute, "Attribute");
-                    _semantics.DrawContentAttribute(isFold_SemanticsAttribute);
+                    _isFoldSemanticsAttribute = EditorGUILayout.Foldout(_isFoldSemanticsAttribute, "Attribute");
+                    _semantics.DrawContentAttribute(_isFoldSemanticsAttribute);
                     
                     _semantics.DrawTitleVaryings();
-                    isFold_SemanticsVaryings = EditorGUILayout.Foldout(isFold_SemanticsVaryings, "Varying");
-                    _semantics.DrawContentVaryings(isFold_SemanticsVaryings);
+                    _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
+                    _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
                     
                     EditorGUILayout.EndScrollView();
                     break;
                 case 3:
-                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _tags.DrawTitleTag();
                     _tags.DrawContentTag();
@@ -163,65 +162,65 @@ namespace yuxuetian.tools.shaderReference
                     _tags.DrawContentRenderPipeline();
                     
                     _tags.DrawTitleQueue();
-                    isFold_TagQueue = EditorGUILayout.Foldout(isFold_TagQueue, "Queue");
-                    _tags.DrawContentQueue(isFold_TagQueue);
+                    _isFoldTagQueue = EditorGUILayout.Foldout(_isFoldTagQueue, "Queue");
+                    _tags.DrawContentQueue(_isFoldTagQueue);
                     
                     _tags.DrawTitleRenderType();
-                    isFold_TagRenderType = EditorGUILayout.Foldout(isFold_TagRenderType, "RenderType");
-                    _tags.DrawContentRenderType(isFold_TagRenderType);
+                    _isFoldTagRenderType = EditorGUILayout.Foldout(_isFoldTagRenderType, "RenderType");
+                    _tags.DrawContentRenderType(_isFoldTagRenderType);
                     
                     _tags.DrawTitleLightMode();
-                    isFold_TagLightMode = EditorGUILayout.Foldout(isFold_TagLightMode, "LightMode");
-                    _tags.DrawContentLightMode(isFold_TagLightMode);
+                    _isFoldTagLightMode = EditorGUILayout.Foldout(_isFoldTagLightMode, "LightMode");
+                    _tags.DrawContentLightMode(_isFoldTagLightMode);
                     
                     _tags.DrawTitleDisableBatching();
-                    isFold_TagDisableBatching = EditorGUILayout.Foldout(isFold_TagDisableBatching, "DisableBatching");
-                    _tags.DrawContentDisableBatching(isFold_TagDisableBatching);
+                    _isFoldTagDisableBatching = EditorGUILayout.Foldout(_isFoldTagDisableBatching, "DisableBatching");
+                    _tags.DrawContentDisableBatching(_isFoldTagDisableBatching);
                     
                     _tags.DrawTitleIgnoreProjector();
-                    isFold_TagIgnoreProjector = EditorGUILayout.Foldout(isFold_TagIgnoreProjector, "IgnoreProjector");
-                    _tags.DrawContentIgnoreProjector(isFold_TagIgnoreProjector);
+                    _isFoldTagIgnoreProjector = EditorGUILayout.Foldout(_isFoldTagIgnoreProjector, "IgnoreProjector");
+                    _tags.DrawContentIgnoreProjector(_isFoldTagIgnoreProjector);
                     
                     _tags.DrawTitleForceNoShadowCasting();
-                    isFold_TagForceNoShadowCasting = EditorGUILayout.Foldout(isFold_TagForceNoShadowCasting, "ForceNoShadowCasting");
-                    _tags.DrawContentForceNoShadowCasting(isFold_TagForceNoShadowCasting);
+                    _isFoldTagForceNoShadowCasting = EditorGUILayout.Foldout(_isFoldTagForceNoShadowCasting, "ForceNoShadowCasting");
+                    _tags.DrawContentForceNoShadowCasting(_isFoldTagForceNoShadowCasting);
 
                     _tags.DrawTitlePreviewType();
-                    isFold_TagPreviewType = EditorGUILayout.Foldout(isFold_TagPreviewType, "PreviewType");
-                    _tags.DrawContentPreviewType(isFold_TagPreviewType);
+                    _isFoldTagPreviewType = EditorGUILayout.Foldout(_isFoldTagPreviewType, "PreviewType");
+                    _tags.DrawContentPreviewType(_isFoldTagPreviewType);
 
                     _tags.DrawTitleCanUseSpriteAtlas();
-                    isFold_TagCanUseSpriteAtlas = EditorGUILayout.Foldout(isFold_TagCanUseSpriteAtlas, "CanUseSpriteAltas");
-                    _tags.DrawContentCanUseSpriteAtlas(isFold_TagCanUseSpriteAtlas);
+                    _isFoldTagCanUseSpriteAtlas = EditorGUILayout.Foldout(_isFoldTagCanUseSpriteAtlas, "CanUseSpriteAltas");
+                    _tags.DrawContentCanUseSpriteAtlas(_isFoldTagCanUseSpriteAtlas);
                     
                     _tags.DrawTitlePerformanceChecks();
-                    isFold_TagPerformanceChecks = EditorGUILayout.Foldout(isFold_TagPerformanceChecks, "PerformanceChecks");
-                    _tags.DrawContentPerformanceChecks(isFold_TagPerformanceChecks);
+                    _isFoldTagPerformanceChecks = EditorGUILayout.Foldout(_isFoldTagPerformanceChecks, "PerformanceChecks");
+                    _tags.DrawContentPerformanceChecks(_isFoldTagPerformanceChecks);
                     
                     EditorGUILayout.EndScrollView();
                     break;
                 case 4:
-                    scrollpos = EditorGUILayout.BeginScrollView(scrollpos);
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
 
                     _renderState.DrawTitleCull();
-                    isFold_RenderStateCull = EditorGUILayout.Foldout(isFold_RenderStateCull, "Cull");
-                    _renderState.DrawContentCull(isFold_RenderStateCull);
+                    _isFoldRenderStateCull = EditorGUILayout.Foldout(_isFoldRenderStateCull, "Cull");
+                    _renderState.DrawContentCull(_isFoldRenderStateCull);
                     
                     _renderState.DrawTitleStencilTest();
-                    isFold_RenderStateStencilTest = EditorGUILayout.Foldout(isFold_RenderStateStencilTest, "Stencil Test");
-                    _renderState.DrawContentStencilTest(isFold_RenderStateStencilTest);
+                    _isFoldRenderStateStencilTest = EditorGUILayout.Foldout(_isFoldRenderStateStencilTest, "Stencil Test");
+                    _renderState.DrawContentStencilTest(_isFoldRenderStateStencilTest);
                     
                     _renderState.DrawTitleDepthTest();
-                    isFold_RenderStateDepthTest = EditorGUILayout.Foldout(isFold_RenderStateDepthTest, "Depth Test");
-                    _renderState.DrawContentDepthTest(isFold_RenderStateDepthTest);
+                    _isFoldRenderStateDepthTest = EditorGUILayout.Foldout(_isFoldRenderStateDepthTest, "Depth Test");
+                    _renderState.DrawContentDepthTest(_isFoldRenderStateDepthTest);
                     
                     _renderState.DrawTitleColorMask();
-                    isFold_RenderStateColorMask = EditorGUILayout.Foldout(isFold_RenderStateColorMask, "ColorMask");
-                    _renderState.DrawContentColorMask(isFold_RenderStateColorMask);
+                    _isFoldRenderStateColorMask = EditorGUILayout.Foldout(_isFoldRenderStateColorMask, "ColorMask");
+                    _renderState.DrawContentColorMask(_isFoldRenderStateColorMask);
                     
                     _renderState.DrawTitleBlend();
-                    isFold_RenderStateBlend = EditorGUILayout.Foldout(isFold_RenderStateBlend, "Blend");
-                    _renderState.DrawContentBlend(isFold_RenderStateBlend);
+                    _isFoldRenderStateBlend = EditorGUILayout.Foldout(_isFoldRenderStateBlend, "Blend");
+                    _renderState.DrawContentBlend(_isFoldRenderStateBlend);
                     
                     _renderState.DrawTitleOther();
                     _renderState.DrawContentOther();
@@ -229,6 +228,9 @@ namespace yuxuetian.tools.shaderReference
                     EditorGUILayout.EndScrollView();
                     break;
                 case 5:
+                    _pragma.DrawTitlePragma();
+                    _isFoldPragma = EditorGUILayout.Foldout(_isFoldPragma, "Pragma");
+                    _pragma.DrawContentPragma(_isFoldPragma);
                     break;
                 case 6:
                     break;
