@@ -37,16 +37,23 @@ namespace yuxuetian.tools.shaderReference
         private bool isFold_RenderStateBlend = true;
         #endregion
         
-
         private Vector2 scrollpos;
-        private string[] tabName = new string[]{"Pipeline(渲染管线)", "Property(属性)" , "Semantics(语义)","Tags(标签)","Render State(渲染状态)"};
         private int selectedTabID;  
-        
+        private string[] tabName = new string[]{"Pipeline(渲染管线)", 
+                                                "Property(属性)" , 
+                                                "Semantics(语义)",
+                                                "Tags(标签)",
+                                                "Render State(渲染状态)",
+                                                "Compile Directive(编译指令)",
+                                                "Transformation(变换)"};
+       
         private ShaderReferencePipeline _pipeline;
         private ShaderReferenceProperty _property;
         private ShaderReferenceSemantics _semantics;
         private ShaderReferenceTags _tags;
         private ShaderReferenceRenderState _renderState;
+        private ShaderReferenceCompileDirective _compileDirective;
+        private ShaderReferenceTransformation _transformation;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
         [MenuItem("ArtTools/ShaderReference #R")]
@@ -61,8 +68,8 @@ namespace yuxuetian.tools.shaderReference
             //绘制两块区域，左边用来描述分类，右边则显示不同分类下的具体内容
             EditorGUILayout.BeginHorizontal();
             
-            float _width = 160.0f;
-            float _height = position.height - 30;
+            float _width = 170.0f;
+            float _height = position.height - 20;
             
             //左侧区域绘制
             EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(_width) , GUILayout.MaxHeight(_height));
@@ -86,6 +93,8 @@ namespace yuxuetian.tools.shaderReference
             _semantics = ScriptableObject.CreateInstance<ShaderReferenceSemantics>();
             _tags = ScriptableObject.CreateInstance<ShaderReferenceTags>();
             _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
+            _compileDirective = ScriptableObject.CreateInstance<ShaderReferenceCompileDirective>();
+            _transformation = ScriptableObject.CreateInstance<ShaderReferenceTransformation>();
         }
 
         void OnDisable()
@@ -218,6 +227,10 @@ namespace yuxuetian.tools.shaderReference
                     _renderState.DrawContentOther();
                     
                     EditorGUILayout.EndScrollView();
+                    break;
+                case 5:
+                    break;
+                case 6:
                     break;
             }
         }
