@@ -34,17 +34,54 @@ namespace yuxuetian.tools.shaderReference
         private bool _isFoldRenderStateBlend = true;
 
         private bool _isFoldPragma = true;
+        private bool _isFoldPragmaTarget = true;
+        private bool _isFoldPragmaRequire = true;
+        private bool _isFoldPragmaShaderVariant = true;
+        private bool _isFoldPragmaOther = true;
+
+        private bool _isFoldTransformationMatrix = true;
+        private bool _isFoldTransformationFunction = true;
+        private bool _isFoldTransformationBaseTransformationMatrix = true;
+
+        private bool _isFoldOther = true;
+
+        private bool _isFoldBuildInVariablesCameraAndScreen = true;
+        private bool _isFoldBuildInVariablesTime = true;
+        private bool _isFoldBuildInVariablesGPUInstancing = true;
+
+        private bool _isFoldPredefinedMacrosTargetPlatform = true;
+        private bool _isFoldPredefineMacrosBranch = true;
+        private bool _isFoldPredefineMacrosLighting = true;
+        private bool _isFoldPredefineMacrosOther = true;
+
+        private bool _isFoldMathFunction = true;
+        private bool _isFoldMathTextureSampler = true;
+        private bool _isFoldMathTextureArraySampler = true;
+
+        private bool _isFoldLightingLightModel = true;
+        private bool _isFoldLightingNormal = true;
+        private bool _isFoldLightingMainLight = true;
+        private bool _isFoldLightingAdditioinalLight = true;
         #endregion
         
         private Vector2 _scrollPos;
         private int _selectedTabID;  
-        private string[] _tabName = new string[]{"Pipeline(渲染管线)", 
-                                                "Property(属性)" , 
-                                                "Semantics(语义)",
-                                                "Tags(标签)",
-                                                "Render State(渲染状态)",
-                                                "Pragma(编译指令)",
-                                                "Transformation(变换)"};
+        private string[] _tabName = new string[]
+        {
+            "Pipeline(渲染管线)", 
+            "Property(属性)" , 
+            "Semantics(语义)",
+            "Tags(标签)",
+            "Render State(渲染状态)",
+            "Pragma(编译指令)",
+            "Transformation(变换)",
+            "Other(其它)",
+            "Build-In Variables(内置变量)",
+            "Predefined Macros(预定义宏)",
+            "Platform Difference(平台差异)",
+            "Math(数学)",
+            "LightingMode(光照模型)"
+        };
        
         private ShaderReferencePipeline _pipeline;
         private ShaderReferenceProperty _property;
@@ -53,6 +90,12 @@ namespace yuxuetian.tools.shaderReference
         private ShaderReferenceRenderState _renderState;
         private ShaderReferencePragma _pragma;
         private ShaderReferenceTransformation _transformation;
+        private ShaderReferenceOther _other;
+        private ShaderReferenceBuildInVariables _buildInVariables;
+        private ShaderReferencePredefinedMacros _predefinedMacros;
+        private ShaderReferencePlatformDifferences _platformDifferences;
+        private ShaderReferenceMath _math;
+        private ShaderReferenceLighting _lighting;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
         [MenuItem("ArtTools/ShaderReference #R")]
@@ -76,8 +119,9 @@ namespace yuxuetian.tools.shaderReference
             EditorGUILayout.EndVertical();
 
             //右侧区域绘制
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MinWidth(position.width - width), GUILayout.MinHeight(height));
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(position.width - width), GUILayout.MinHeight(height));
             DrawMainUI(_selectedTabID);
+            
             EditorGUILayout.EndVertical();
             
             EditorGUILayout.EndHorizontal();
@@ -94,6 +138,12 @@ namespace yuxuetian.tools.shaderReference
             _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
             _pragma = ScriptableObject.CreateInstance<ShaderReferencePragma>();
             _transformation = ScriptableObject.CreateInstance<ShaderReferenceTransformation>();
+            _other = ScriptableObject.CreateInstance<ShaderReferenceOther>();
+            _buildInVariables = ScriptableObject.CreateInstance<ShaderReferenceBuildInVariables>();
+            _predefinedMacros = ScriptableObject.CreateInstance<ShaderReferencePredefinedMacros>();
+            _platformDifferences = ScriptableObject.CreateInstance<ShaderReferencePlatformDifferences>();
+            _math = ScriptableObject.CreateInstance<ShaderReferenceMath>();
+            _lighting = ScriptableObject.CreateInstance<ShaderReferenceLighting>();
         }
 
         void OnDisable()
@@ -106,7 +156,6 @@ namespace yuxuetian.tools.shaderReference
             switch (_selectedTabID)
             {
                 case 0:
-                    //滑动条
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _pipeline.DrawTitleApplicationStage();
@@ -228,11 +277,155 @@ namespace yuxuetian.tools.shaderReference
                     EditorGUILayout.EndScrollView();
                     break;
                 case 5:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
                     _pragma.DrawTitlePragma();
                     _isFoldPragma = EditorGUILayout.Foldout(_isFoldPragma, "Pragma");
                     _pragma.DrawContentPragma(_isFoldPragma);
+                    
+                    _pragma.DrawTitletPragmaTarget();
+                    _isFoldPragmaTarget = EditorGUILayout.Foldout(_isFoldPragmaTarget, "Target(目标)");
+                    _pragma.DrawContentPragmaTarget(_isFoldPragmaTarget);
+                    _isFoldPragmaRequire = EditorGUILayout.Foldout(_isFoldPragmaRequire, "Require(需要)");
+                    _pragma.DrawContentPragmaRequire(_isFoldPragmaRequire);
+                    
+                    _pragma.DrawTitlePragmaShaderVariant();
+                    _isFoldPragmaShaderVariant = EditorGUILayout.Foldout(_isFoldPragmaShaderVariant, "ShaderVariant(变体)");
+                    _pragma.DrawContentPragmaShaderVariant(_isFoldPragmaShaderVariant);
+                    
+                    _pragma.DrawTitlePragmaOther();
+                    _isFoldPragmaOther = EditorGUILayout.Foldout(_isFoldPragmaOther, "Other");
+                    _pragma.DrawContentPragmaOther(_isFoldPragmaOther);
+                    
+                    EditorGUILayout.EndScrollView();
                     break;
                 case 6:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _transformation.DrawTitleSpaceTransformationMatrix();
+                    _isFoldTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationMatrix, "空间变换(矩阵)");
+                    _transformation.DrawContentSpaceTransformationMatrix(_isFoldTransformationMatrix);
+                    
+                    _transformation.DrawTitleSpaceTransformationFunction();
+                    _isFoldTransformationFunction = EditorGUILayout.Foldout(_isFoldTransformationFunction, "空间变换(方法)");
+                    _transformation.DrawContentSpaceTransformationFunction(_isFoldTransformationFunction);
+                    
+                    _transformation.DrawTitleBaseTransformationMatrix();
+                    _isFoldTransformationBaseTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationBaseTransformationMatrix, "基础变换矩阵");
+                    _transformation.DrawContentBaseTransformationMatrix(_isFoldTransformationBaseTransformationMatrix);
+                    
+                    _transformation.DrawTitleTransformationRules();
+                    _transformation.DrawContentTransformationRules();
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 7:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _other.DrawTitleOther();
+                    _isFoldOther = EditorGUILayout.Foldout(_isFoldOther, "Other");
+                    _other.DrawContentOther(_isFoldOther);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 8: 
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _buildInVariables.DrawTitleVert();
+                    _buildInVariables.DrawContentVert();
+                    
+                    _buildInVariables.DrawTitleBuildInVariabledCameraAndScreen();
+                    _isFoldBuildInVariablesCameraAndScreen = EditorGUILayout.Foldout(_isFoldBuildInVariablesCameraAndScreen, "CameraAndScreen");
+                    _buildInVariables.DrawContentBuildInVariabledCameraAndScreen(_isFoldBuildInVariablesCameraAndScreen);
+                    
+                    _buildInVariables.DrawTitleBuildInVariablesTime();
+                    _isFoldBuildInVariablesTime = EditorGUILayout.Foldout(_isFoldBuildInVariablesTime, "Time");
+                    _buildInVariables.DrawContentBuildInVariablesTime(_isFoldBuildInVariablesTime);
+                    
+                    _buildInVariables.DrawTitleBuidInVariablesGPUInstancing();
+                    _isFoldBuildInVariablesGPUInstancing = EditorGUILayout.Foldout(_isFoldBuildInVariablesGPUInstancing, "GPUInstancing");
+                    _buildInVariables.DrawContentBuildInVariablesGPUInstancing(_isFoldBuildInVariablesGPUInstancing);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 9:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _predefinedMacros.DrawTitleTargetPlatform();
+                    _isFoldPredefinedMacrosTargetPlatform = EditorGUILayout.Foldout(_isFoldPredefinedMacrosTargetPlatform, "TargetPlatform");
+                    _predefinedMacros.DrawContentGargetPlatform(_isFoldPredefinedMacrosTargetPlatform);
+                    
+                    _predefinedMacros.DrawTitleBranch();
+                    _isFoldPredefineMacrosBranch = EditorGUILayout.Foldout(_isFoldPredefineMacrosBranch, "Branch");
+                    _predefinedMacros.DrawContentBranch(_isFoldPredefineMacrosBranch);
+                    
+                    _predefinedMacros.DrawTitleShaderTargetModel();
+                    _predefinedMacros.DrawContentShaderTargetModel();
+                    _predefinedMacros.DrawTitleUnityVersion();
+                    _predefinedMacros.DrawContentUnityVersion();
+                    _predefinedMacros.DrawTitlePlatformDifferenceHelpers();
+                    _predefinedMacros.DrawContentPlatformDifferenceHelpers();
+                    _predefinedMacros.DrawTitleUI();
+                    _predefinedMacros.DrawContentUI();
+                    _predefinedMacros.DrawTitleLighting();
+                    _isFoldPredefineMacrosLighting = EditorGUILayout.Foldout(_isFoldPredefineMacrosLighting, "Lighting");
+                    _predefinedMacros.DrawContentLighting(_isFoldPredefineMacrosLighting);
+                    _predefinedMacros.DrawTitleOther();
+                    _isFoldPredefineMacrosOther = EditorGUILayout.Foldout(_isFoldPredefineMacrosOther, "Other");
+                    _predefinedMacros.DrawContentOther(_isFoldPredefineMacrosOther);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 10:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _platformDifferences.DrawTitlePlatformDifferenceHCSSpace();
+                    _platformDifferences.DrawContentPlatformDifferenceHCSSpace();
+                    _platformDifferences.DrawTitlePlatformDifferenceReversedZ();
+                    _platformDifferences.DrawContentPlatformDifferenceReversedZ();
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 11:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _math.DrawTitleMathFunction();
+                    _isFoldMathFunction = EditorGUILayout.Foldout(_isFoldMathFunction, "MathFunction(数学函数)");
+                    _math.DrawContentMathFunction(_isFoldMathFunction);
+                    
+                    _math.DrawTitleMathTextureSampler();
+                    _isFoldMathTextureSampler = EditorGUILayout.Foldout(_isFoldMathTextureSampler, "TextureSampler(普通纹理采样)");
+                    _math.DrawContentMathTextureSampler(_isFoldMathTextureSampler);
+
+                    _math.DrawTitleMathTextureArraySampler();
+                    _isFoldMathTextureArraySampler = EditorGUILayout.Foldout(_isFoldMathTextureArraySampler,"TextureArraySampler(纹理数组采样)");
+                    _math.DrawContentMahTextureArraySampler(_isFoldMathTextureArraySampler);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 12:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _lighting.DrawTitleLightModel();
+                    _isFoldLightingLightModel = EditorGUILayout.Foldout(_isFoldLightingLightModel, "LightModel");
+                    _lighting.DrawContentLightModel(_isFoldLightingLightModel);
+                    
+                    _lighting.DrawTitleNormal();
+                    _isFoldLightingNormal = EditorGUILayout.Foldout(_isFoldLightingNormal, "NormalMap");
+                    _lighting.DrawContentNormal(_isFoldLightingNormal);
+                    
+                    _lighting.DrawTitleMainLight();
+                    _isFoldLightingMainLight = EditorGUILayout.Foldout(_isFoldLightingMainLight, "主方向光");
+                    _lighting.DrawContentMainLight(_isFoldLightingMainLight);
+                    
+                    _lighting.DrawTitleAdditionalLight();
+                    _isFoldLightingAdditioinalLight = EditorGUILayout.Foldout(_isFoldLightingAdditioinalLight, "额外光源");
+                    _lighting.DrawContentAdditioinalLight(_isFoldLightingAdditioinalLight);
+                    
+                    _lighting.DrawTitleCastShadow();
+                    _lighting.DrawContentCastShadow();
+                    
+                    EditorGUILayout.EndScrollView();
                     break;
             }
         }
