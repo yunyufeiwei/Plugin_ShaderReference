@@ -61,7 +61,11 @@ namespace yuxuetian.tools.shaderReference
         private bool _isFoldLightingLightModel = true;
         private bool _isFoldLightingNormal = true;
         private bool _isFoldLightingMainLight = true;
-        private bool _isFoldLightingAdditioinalLight = true;
+        private bool _isFoldLightingAdditionalLight = true;
+        private bool _isFoldLightingReceiveShadow = true;
+        private bool _isFoldLightingFog = true;
+        private bool _isFoldLightingBake = true;
+        private bool _isFoldLightingEnvironmentColor = true;
         #endregion
         
         private Vector2 _scrollPos;
@@ -419,11 +423,27 @@ namespace yuxuetian.tools.shaderReference
                     _lighting.DrawContentMainLight(_isFoldLightingMainLight);
                     
                     _lighting.DrawTitleAdditionalLight();
-                    _isFoldLightingAdditioinalLight = EditorGUILayout.Foldout(_isFoldLightingAdditioinalLight, "额外光源");
-                    _lighting.DrawContentAdditioinalLight(_isFoldLightingAdditioinalLight);
+                    _isFoldLightingAdditionalLight = EditorGUILayout.Foldout(_isFoldLightingAdditionalLight, "额外光源");
+                    _lighting.DrawContentAdditioinalLight(_isFoldLightingAdditionalLight);
                     
                     _lighting.DrawTitleCastShadow();
                     _lighting.DrawContentCastShadow();
+                    
+                    _lighting.DrawTitleReceiveShadow();
+                    _isFoldLightingReceiveShadow = EditorGUILayout.Foldout(_isFoldLightingReceiveShadow, "ReceiveShadow");
+                    _lighting.DrawContentReceiveShadow(_isFoldLightingReceiveShadow);
+                    
+                    _lighting.DrawTitleLightingFog();
+                    _isFoldLightingFog = EditorGUILayout.Foldout(_isFoldLightingFog, "Fog");
+                    _lighting.DrawContentLightingFog(_isFoldLightingFog);  
+                    
+                    _lighting.DrawTitleLightingBake();
+                    _isFoldLightingBake = EditorGUILayout.Foldout(_isFoldLightingBake, "Light Bake");
+                    _lighting.DrawContentLightingBake(_isFoldLightingBake);
+                    
+                    _lighting.DrawTitleLightingEnvironmentColor();
+                    _isFoldLightingEnvironmentColor = EditorGUILayout.Foldout(_isFoldLightingEnvironmentColor, "EnvironmentColor");
+                    _lighting.DrawContentLightEnvironmentColor(_isFoldLightingEnvironmentColor);
                     
                     EditorGUILayout.EndScrollView();
                     break;

@@ -140,5 +140,80 @@ namespace yuxuetian.tools.shaderReference
             reference.DrawContent("ShadowCaster", "添加LightMode = ShadowCaster的pass即可渲染进lightmap产生投影.\n"+
                                     "UsePass \"Universal Render Pipeline/Lit/SHADOWCASTER\"");
         }
+
+        public void DrawTitleReceiveShadow()
+        {
+            reference.DrawTitle("ReceiveShadow(接收阴影)");
+        }
+        public void DrawContentReceiveShadow(bool isFold)
+        {
+            if (isFold)
+            {
+                reference.DrawContent("_MAIN_LIGHT_SHADOWS", "是否开启主灯的阴影(管线设置中主灯的Cast Shadows是否开启)");
+                reference.DrawContent("MAIN_LIGHT_CALCULATE_SHADOWS", "当管线上设置了主灯投影，并且当前对象也没有激活_RECEIVE_SHADOWS_OFF时开启");
+                reference.DrawContent("_MAIN_LIGHT_SHADOWS_CASCADE", "是否开启主灯的级联阴影(当管线设置中Shadows>Cascades为No Cascades时不激活，否则激活)");
+                reference.DrawContent("REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR", "当开启主灯阴影但是没有开启级联阴影时，则激活");
+                reference.DrawContent("_MainLightShadowmapSize", "ShadowMap的尺寸\n" +
+                                                                 "x=1/width y=1/height z=width w=height");
+                reference.DrawContent("_MainLightShadowParams", "Shadow的参数\n" +
+                                                                "x=ShadowStrength(阴影强度) y=(1为软阴影,0为硬阴影)");
+                reference.DrawContent("_SHADOWS_SOFT", "管线上Shadows中是否开启软阴影(Soft Shadows)");
+            }
+        }
+
+        public void DrawTitleLightingFog()
+        {
+            reference.DrawTitle("Fog(雾)");
+        }
+        public void DrawContentLightingFog(bool isFold)
+        {
+            if (isFold)
+            {
+                reference.DrawContent("unity_FogColor", "内置雾效颜色值");
+                reference.DrawContent("实现方法", "#pragma multi_compile_fog\n" +
+                                          "float fogCoord  : TEXCOORD1;\t//在Varyings中定义fogCoord\n" +
+                                          "o.fogCoord = ComputeFogFactor(o.positionCS.z);\t//在顶点着色器中添加\n" +
+                                          "FinalColor.rgb = MixFog(c.rgb, i.fogCoord);\t//在片断着色器中添加");
+                reference.DrawContent("Linear", "线性雾公式:(end-z)/(end-start)");
+                reference.DrawContent("EXP", "指数雾公式:exp(-density*z)");
+                reference.DrawContent("EXP2", "指数2次方雾公式:exp(-(density*z)^2)");
+            }
+        }
+
+        public void DrawTitleLightingBake()
+        {
+            reference.DrawTitle("Light Bake(光照烘培)");
+        }
+        public void DrawContentLightingBake(bool isFold)
+        {
+            if (isFold)
+            {
+                reference.DrawContent("LIGHTMAP_ON", "是否开启光照烘焙\n" +
+                                         "1.Lighting界面中的Baked Global Illumination勾选\n" +
+                                         "2.场景烘焙，或者勾选自动烘焙\n" +
+                                         "3.模型勾选Static中的Contribute GI");
+                reference.DrawContent("_MIXED_LIGHTING_SUBTRACTIVE", "\n" +
+                                         "1.Lighting界面中的Baked Global Illumination勾选\n" +
+                                         "2.Lighting Mode设置为Subtractive模式\n" +
+                                         "3.场景烘焙，或者勾选自动烘焙\n" +
+                                         "4.模型勾选Static中的Contribute GI\n" +
+                                         "5.灯光必须设置为Mixed模式");
+            }
+        }
+
+        public void DrawTitleLightingEnvironmentColor()
+        {
+            reference.DrawTitle("环境色");
+        }
+        public void DrawContentLightEnvironmentColor(bool isFold)
+        {
+            if (isFold)
+            {
+                reference.DrawContent("1.half3 vertexSH : TEXCOORD?    在v2f中声明\n" +
+                                        "2.o.vertexSH = SampleSHVertex(世界空间法线);    在顶点着色器中调用\n" +
+                                        "3.half3 sh = SampleSHPixel(i.vertexSH, 世界空间法线);    在片断着色器中调用");
+            }
+            
+        }
     }
 }
