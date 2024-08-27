@@ -1,7 +1,6 @@
-using UnityEngine;
 using UnityEditor;
 
-namespace yuxuetian.tools.shaderReference
+namespace Editor.ShaderDocument
 {
     public class ShaderReferenceColorBlendMode : EditorWindow
     {

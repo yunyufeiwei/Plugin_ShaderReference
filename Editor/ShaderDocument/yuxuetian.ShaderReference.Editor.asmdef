@@ -1,5 +1,5 @@
 {
-    "name": "yuxuetian.tools.ShaderReference",
+    "name": "yuxuetian.ShaderReference.Editor",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [

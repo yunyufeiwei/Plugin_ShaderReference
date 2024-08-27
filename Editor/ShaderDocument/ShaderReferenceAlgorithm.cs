@@ -1,8 +1,6 @@
-using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
 
-namespace yuxuetian.tools.shaderReference
+namespace Editor.ShaderDocument
 {
     public class ShaderReferenceAlgorithm : EditorWindow
     {

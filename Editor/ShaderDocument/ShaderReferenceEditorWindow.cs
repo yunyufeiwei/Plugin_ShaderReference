@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace yuxuetian.tools.shaderReference
+namespace Editor.ShaderDocument
 {
     public class ShaderReferenceEditorWindow : EditorWindow
     {
@@ -390,8 +390,8 @@ namespace yuxuetian.tools.shaderReference
                 case 10:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
-                    _platformDifferences.DrawTitlePlatformDifferenceHCSSpace();
-                    _platformDifferences.DrawContentPlatformDifferenceHCSSpace();
+                    _platformDifferences.DrawTitlePlatformDifferenceHcsSpace();
+                    _platformDifferences.DrawContentPlatformDifferenceHcsSpace();
                     _platformDifferences.DrawTitlePlatformDifferenceReversedZ();
                     _platformDifferences.DrawContentPlatformDifferenceReversedZ();
                     
