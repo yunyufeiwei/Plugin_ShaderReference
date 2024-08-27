@@ -66,6 +66,17 @@ namespace yuxuetian.tools.shaderReference
         private bool _isFoldLightingFog = true;
         private bool _isFoldLightingBake = true;
         private bool _isFoldLightingEnvironmentColor = true;
+
+        private bool _isFoldAlgorithmUVShape = true;
+        private bool _isFoldAlgorithmVertex = true;
+        private bool _isFoldAlgorithmColor = true;
+        private bool _isFoldAlgorithmLight = true;
+        private bool _isFoldAlgorithmFresnel = true;
+        private bool _isFoldAlgorithmXRay = true;
+        private bool _isFoldAlgorithmDither = true;
+
+        private bool _isFoldSubstancePainterMaterialProperty = true;
+        private bool _isFoldSubstancePainterFrag = true;
         #endregion
         
         private Vector2 _scrollPos;
@@ -84,7 +95,11 @@ namespace yuxuetian.tools.shaderReference
             "Predefined Macros(预定义宏)",
             "Platform Difference(平台差异)",
             "Math(数学)",
-            "LightingMode(光照模型)"
+            "LightingMode(光照模型)",
+            "ColorBlendModePS(颜色混合模式)",
+            "Algorithm(算法)",
+            "SubstancePainter",
+            "About"
         };
        
         private ShaderReferencePipeline _pipeline;
@@ -100,6 +115,10 @@ namespace yuxuetian.tools.shaderReference
         private ShaderReferencePlatformDifferences _platformDifferences;
         private ShaderReferenceMath _math;
         private ShaderReferenceLighting _lighting;
+        private ShaderReferenceColorBlendMode _colorBlendMode;
+        private ShaderReferenceAlgorithm _algorithm;
+        private ShaderReferenceSubstancePainter _substancePainter;
+        private ShaderReferenceAbout _about;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
         [MenuItem("ArtTools/ShaderReference #R")]
@@ -133,7 +152,7 @@ namespace yuxuetian.tools.shaderReference
 
         void OnEnable()
         {
-            _selectedTabID = EditorPrefs.HasKey("yuxuetian_SelectedTabID") ? EditorPrefs.GetInt("yuxuetian_SelectedTabID") : 0;
+            _selectedTabID = EditorPrefs.HasKey("SelectedTabID") ? EditorPrefs.GetInt("SelectedTabID") : 0;
             
             _pipeline = ScriptableObject.CreateInstance<ShaderReferencePipeline>();
             _property = ScriptableObject.CreateInstance<ShaderReferenceProperty>();
@@ -148,11 +167,15 @@ namespace yuxuetian.tools.shaderReference
             _platformDifferences = ScriptableObject.CreateInstance<ShaderReferencePlatformDifferences>();
             _math = ScriptableObject.CreateInstance<ShaderReferenceMath>();
             _lighting = ScriptableObject.CreateInstance<ShaderReferenceLighting>();
+            _colorBlendMode = ScriptableObject.CreateInstance<ShaderReferenceColorBlendMode>();
+            _algorithm = ScriptableObject.CreateInstance<ShaderReferenceAlgorithm>();
+            _substancePainter = ScriptableObject.CreateInstance<ShaderReferenceSubstancePainter>();
+            _about = ScriptableObject.CreateInstance<ShaderReferenceAbout>();
         }
 
         void OnDisable()
         {
-            EditorPrefs.SetInt("yuxuetian_SelectedTabID", _selectedTabID);
+            EditorPrefs.SetInt("SelectedTabID", _selectedTabID);
         }
 
         void DrawMainUI(int _selectedTabID)
@@ -258,23 +281,18 @@ namespace yuxuetian.tools.shaderReference
                     _renderState.DrawTitleCull();
                     _isFoldRenderStateCull = EditorGUILayout.Foldout(_isFoldRenderStateCull, "Cull");
                     _renderState.DrawContentCull(_isFoldRenderStateCull);
-                    
                     _renderState.DrawTitleStencilTest();
                     _isFoldRenderStateStencilTest = EditorGUILayout.Foldout(_isFoldRenderStateStencilTest, "Stencil Test");
                     _renderState.DrawContentStencilTest(_isFoldRenderStateStencilTest);
-                    
                     _renderState.DrawTitleDepthTest();
                     _isFoldRenderStateDepthTest = EditorGUILayout.Foldout(_isFoldRenderStateDepthTest, "Depth Test");
                     _renderState.DrawContentDepthTest(_isFoldRenderStateDepthTest);
-                    
                     _renderState.DrawTitleColorMask();
                     _isFoldRenderStateColorMask = EditorGUILayout.Foldout(_isFoldRenderStateColorMask, "ColorMask");
                     _renderState.DrawContentColorMask(_isFoldRenderStateColorMask);
-                    
                     _renderState.DrawTitleBlend();
                     _isFoldRenderStateBlend = EditorGUILayout.Foldout(_isFoldRenderStateBlend, "Blend");
                     _renderState.DrawContentBlend(_isFoldRenderStateBlend);
-                    
                     _renderState.DrawTitleOther();
                     _renderState.DrawContentOther();
                     
@@ -286,17 +304,14 @@ namespace yuxuetian.tools.shaderReference
                     _pragma.DrawTitlePragma();
                     _isFoldPragma = EditorGUILayout.Foldout(_isFoldPragma, "Pragma");
                     _pragma.DrawContentPragma(_isFoldPragma);
-                    
                     _pragma.DrawTitletPragmaTarget();
                     _isFoldPragmaTarget = EditorGUILayout.Foldout(_isFoldPragmaTarget, "Target(目标)");
                     _pragma.DrawContentPragmaTarget(_isFoldPragmaTarget);
                     _isFoldPragmaRequire = EditorGUILayout.Foldout(_isFoldPragmaRequire, "Require(需要)");
                     _pragma.DrawContentPragmaRequire(_isFoldPragmaRequire);
-                    
                     _pragma.DrawTitlePragmaShaderVariant();
                     _isFoldPragmaShaderVariant = EditorGUILayout.Foldout(_isFoldPragmaShaderVariant, "ShaderVariant(变体)");
                     _pragma.DrawContentPragmaShaderVariant(_isFoldPragmaShaderVariant);
-                    
                     _pragma.DrawTitlePragmaOther();
                     _isFoldPragmaOther = EditorGUILayout.Foldout(_isFoldPragmaOther, "Other");
                     _pragma.DrawContentPragmaOther(_isFoldPragmaOther);
@@ -309,15 +324,12 @@ namespace yuxuetian.tools.shaderReference
                     _transformation.DrawTitleSpaceTransformationMatrix();
                     _isFoldTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationMatrix, "空间变换(矩阵)");
                     _transformation.DrawContentSpaceTransformationMatrix(_isFoldTransformationMatrix);
-                    
                     _transformation.DrawTitleSpaceTransformationFunction();
                     _isFoldTransformationFunction = EditorGUILayout.Foldout(_isFoldTransformationFunction, "空间变换(方法)");
                     _transformation.DrawContentSpaceTransformationFunction(_isFoldTransformationFunction);
-                    
                     _transformation.DrawTitleBaseTransformationMatrix();
                     _isFoldTransformationBaseTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationBaseTransformationMatrix, "基础变换矩阵");
                     _transformation.DrawContentBaseTransformationMatrix(_isFoldTransformationBaseTransformationMatrix);
-                    
                     _transformation.DrawTitleTransformationRules();
                     _transformation.DrawContentTransformationRules();
                     
@@ -337,15 +349,12 @@ namespace yuxuetian.tools.shaderReference
                     
                     _buildInVariables.DrawTitleVert();
                     _buildInVariables.DrawContentVert();
-                    
                     _buildInVariables.DrawTitleBuildInVariabledCameraAndScreen();
                     _isFoldBuildInVariablesCameraAndScreen = EditorGUILayout.Foldout(_isFoldBuildInVariablesCameraAndScreen, "CameraAndScreen");
                     _buildInVariables.DrawContentBuildInVariabledCameraAndScreen(_isFoldBuildInVariablesCameraAndScreen);
-                    
                     _buildInVariables.DrawTitleBuildInVariablesTime();
                     _isFoldBuildInVariablesTime = EditorGUILayout.Foldout(_isFoldBuildInVariablesTime, "Time");
                     _buildInVariables.DrawContentBuildInVariablesTime(_isFoldBuildInVariablesTime);
-                    
                     _buildInVariables.DrawTitleBuidInVariablesGPUInstancing();
                     _isFoldBuildInVariablesGPUInstancing = EditorGUILayout.Foldout(_isFoldBuildInVariablesGPUInstancing, "GPUInstancing");
                     _buildInVariables.DrawContentBuildInVariablesGPUInstancing(_isFoldBuildInVariablesGPUInstancing);
@@ -358,11 +367,9 @@ namespace yuxuetian.tools.shaderReference
                     _predefinedMacros.DrawTitleTargetPlatform();
                     _isFoldPredefinedMacrosTargetPlatform = EditorGUILayout.Foldout(_isFoldPredefinedMacrosTargetPlatform, "TargetPlatform");
                     _predefinedMacros.DrawContentGargetPlatform(_isFoldPredefinedMacrosTargetPlatform);
-                    
                     _predefinedMacros.DrawTitleBranch();
                     _isFoldPredefineMacrosBranch = EditorGUILayout.Foldout(_isFoldPredefineMacrosBranch, "Branch");
                     _predefinedMacros.DrawContentBranch(_isFoldPredefineMacrosBranch);
-                    
                     _predefinedMacros.DrawTitleShaderTargetModel();
                     _predefinedMacros.DrawContentShaderTargetModel();
                     _predefinedMacros.DrawTitleUnityVersion();
@@ -396,11 +403,9 @@ namespace yuxuetian.tools.shaderReference
                     _math.DrawTitleMathFunction();
                     _isFoldMathFunction = EditorGUILayout.Foldout(_isFoldMathFunction, "MathFunction(数学函数)");
                     _math.DrawContentMathFunction(_isFoldMathFunction);
-                    
                     _math.DrawTitleMathTextureSampler();
                     _isFoldMathTextureSampler = EditorGUILayout.Foldout(_isFoldMathTextureSampler, "TextureSampler(普通纹理采样)");
                     _math.DrawContentMathTextureSampler(_isFoldMathTextureSampler);
-
                     _math.DrawTitleMathTextureArraySampler();
                     _isFoldMathTextureArraySampler = EditorGUILayout.Foldout(_isFoldMathTextureArraySampler,"TextureArraySampler(纹理数组采样)");
                     _math.DrawContentMahTextureArraySampler(_isFoldMathTextureArraySampler);
@@ -413,39 +418,74 @@ namespace yuxuetian.tools.shaderReference
                     _lighting.DrawTitleLightModel();
                     _isFoldLightingLightModel = EditorGUILayout.Foldout(_isFoldLightingLightModel, "LightModel");
                     _lighting.DrawContentLightModel(_isFoldLightingLightModel);
-                    
                     _lighting.DrawTitleNormal();
                     _isFoldLightingNormal = EditorGUILayout.Foldout(_isFoldLightingNormal, "NormalMap");
                     _lighting.DrawContentNormal(_isFoldLightingNormal);
-                    
                     _lighting.DrawTitleMainLight();
                     _isFoldLightingMainLight = EditorGUILayout.Foldout(_isFoldLightingMainLight, "主方向光");
                     _lighting.DrawContentMainLight(_isFoldLightingMainLight);
-                    
                     _lighting.DrawTitleAdditionalLight();
                     _isFoldLightingAdditionalLight = EditorGUILayout.Foldout(_isFoldLightingAdditionalLight, "额外光源");
                     _lighting.DrawContentAdditioinalLight(_isFoldLightingAdditionalLight);
-                    
                     _lighting.DrawTitleCastShadow();
                     _lighting.DrawContentCastShadow();
-                    
                     _lighting.DrawTitleReceiveShadow();
                     _isFoldLightingReceiveShadow = EditorGUILayout.Foldout(_isFoldLightingReceiveShadow, "ReceiveShadow");
                     _lighting.DrawContentReceiveShadow(_isFoldLightingReceiveShadow);
-                    
                     _lighting.DrawTitleLightingFog();
                     _isFoldLightingFog = EditorGUILayout.Foldout(_isFoldLightingFog, "Fog");
                     _lighting.DrawContentLightingFog(_isFoldLightingFog);  
-                    
                     _lighting.DrawTitleLightingBake();
                     _isFoldLightingBake = EditorGUILayout.Foldout(_isFoldLightingBake, "Light Bake");
                     _lighting.DrawContentLightingBake(_isFoldLightingBake);
-                    
                     _lighting.DrawTitleLightingEnvironmentColor();
                     _isFoldLightingEnvironmentColor = EditorGUILayout.Foldout(_isFoldLightingEnvironmentColor, "EnvironmentColor");
                     _lighting.DrawContentLightEnvironmentColor(_isFoldLightingEnvironmentColor);
-                    
                     EditorGUILayout.EndScrollView();
+                    break;
+                case 13 :
+                    _colorBlendMode.DrawTitleColorBlendModePS();
+                    _colorBlendMode.DrawContentColorBlendModePS();
+                    break;
+                case 14:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    _algorithm.DrawTitleAlgorithmUVShape();
+                    _isFoldAlgorithmUVShape = EditorGUILayout.Foldout(_isFoldAlgorithmUVShape, "UVShape");
+                    _algorithm.DrawContentAlgorithmUVShape(_isFoldAlgorithmUVShape);
+                    _algorithm.DrawTitleAlgorithmColor();
+                    _isFoldAlgorithmColor = EditorGUILayout.Foldout(_isFoldAlgorithmColor, "Color");
+                    _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmColor);
+                    _algorithm.DrawTitleAlgorithmVertex();
+                    _isFoldAlgorithmVertex = EditorGUILayout.Foldout(_isFoldAlgorithmVertex, "Vertex");
+                    _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmVertex);
+                    _algorithm.DrawTitleAlgorithmLight();
+                    _isFoldAlgorithmLight = EditorGUILayout.Foldout(_isFoldAlgorithmLight, "Light");
+                    _algorithm.DrawContentAlgorithmLight(_isFoldAlgorithmLight);
+                    _algorithm.DrawTitleAlgorithmOther();
+                    _isFoldAlgorithmFresnel = EditorGUILayout.Foldout(_isFoldAlgorithmFresnel, "Fresnel");
+                    _algorithm.DrawContentAlgorithmFresnel(_isFoldAlgorithmFresnel);
+                    _isFoldAlgorithmXRay = EditorGUILayout.Foldout(_isFoldAlgorithmXRay, "x-Ray");
+                    _algorithm.DrawContnetAlgorithmXRar(_isFoldAlgorithmFresnel);
+                    _isFoldAlgorithmDither = EditorGUILayout.Foldout(_isFoldAlgorithmDither, "Dither");
+                    _algorithm.DrawContentAlgorithmDither(_isFoldAlgorithmXRay);
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 15:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    _substancePainter.DrawTitleSubstancePainterURL();
+                    _substancePainter.DrawContentSubstancePainterURL();
+                    _substancePainter.DrawTitleSubstancePainterMaterialProperty();
+                    _isFoldSubstancePainterMaterialProperty = EditorGUILayout.Foldout(_isFoldSubstancePainterMaterialProperty, "Property");
+                    _substancePainter.DrawContentSubstancePainterMaterialProperyt(_isFoldSubstancePainterMaterialProperty);
+                    _substancePainter.DrawTitleSubstancePainterFrag();
+                    _isFoldSubstancePainterFrag = EditorGUILayout.Foldout(_isFoldSubstancePainterFrag, "Frag");
+                    _substancePainter.DrawContentSubstancePainterFrag(_isFoldSubstancePainterFrag);
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 16:
+                    _about.DrawTitleURL();
+                    EditorGUILayout.Space(50);
+                    _about.DrawContentUnityTexture();
                     break;
             }
         }
