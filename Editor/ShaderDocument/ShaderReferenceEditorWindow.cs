@@ -488,11 +488,13 @@ namespace Editor.ShaderDocument
                 case 16:
                     _studyWebsite.DrawTitleStudyWebsiteForUnity();
                     _studyWebsite.DrawContentStudyWebsiteForUnity();
+                    EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleStudyWebsiteProgram();
                     _studyWebsite.DrawContentStudyWebsityProgram();
-                    EditorGUILayout.Space(40);
+                    EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleStudyWebsityGraphics();
                     _studyWebsite.DrawContentStudyWebsityGraphics();
+                    EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleStudyWebsityCalculatorTools();
                     _studyWebsite.DrawContentStudyWebsityCalculatorTools();
                     break;
