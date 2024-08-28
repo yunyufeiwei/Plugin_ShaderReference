@@ -29,6 +29,26 @@ namespace Editor.ShaderDocument
             EditorGUILayout.EndVertical();
         }
 
+        public void DrawContentSite(string buttonName, string WebsiteName)
+        {
+            GUIStyle labelStyle = new GUIStyle("label");
+            labelStyle.fontStyle = FontStyle.Normal;
+            labelStyle.fontSize = 16;
+            labelStyle.alignment = TextAnchor.MiddleLeft;
+            
+            EditorGUILayout.BeginVertical();
+            
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(buttonName, GUILayout.MaxWidth(180.0f), GUILayout.MaxHeight(20.0f)))
+            {
+                Application.OpenURL(WebsiteName);
+            }
+            EditorGUILayout.TextArea(WebsiteName,labelStyle);
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.EndVertical();
+        }
+
         //主按钮的显示样式
         private GUIStyle _style01;
         private GUIStyle Style01

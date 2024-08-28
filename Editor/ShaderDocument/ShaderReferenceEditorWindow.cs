@@ -486,11 +486,15 @@ namespace Editor.ShaderDocument
                     EditorGUILayout.EndScrollView();
                     break;
                 case 16:
+                    _studyWebsite.DrawTitleStudyWebsiteForUnity();
+                    _studyWebsite.DrawContentStudyWebsiteForUnity();
                     _studyWebsite.DrawTitleStudyWebsiteProgram();
-                    _studyWebsite.DrawContentStydyWebsityProgram();
+                    _studyWebsite.DrawContentStudyWebsityProgram();
                     EditorGUILayout.Space(40);
-                    _studyWebsite.DrawTitleStydyWebsityGraphics();
-                    _studyWebsite.DrawContentStydyWebsityGraphics();
+                    _studyWebsite.DrawTitleStudyWebsityGraphics();
+                    _studyWebsite.DrawContentStudyWebsityGraphics();
+                    _studyWebsite.DrawTitleStudyWebsityCalculatorTools();
+                    _studyWebsite.DrawContentStudyWebsityCalculatorTools();
                     break;
                 case 17:
                     _about.DrawTitleURL();
