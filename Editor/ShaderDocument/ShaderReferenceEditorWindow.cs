@@ -99,6 +99,7 @@ namespace Editor.ShaderDocument
             "ColorBlendModePS(颜色混合模式)",
             "Algorithm(算法)",
             "SubstancePainter",
+            "StudyWebsite(学习网址)",
             "About"
         };
        
@@ -118,6 +119,7 @@ namespace Editor.ShaderDocument
         private ShaderReferenceColorBlendMode _colorBlendMode;
         private ShaderReferenceAlgorithm _algorithm;
         private ShaderReferenceSubstancePainter _substancePainter;
+        private ShaderReferenceStudyWebsite _studyWebsite;
         private ShaderReferenceAbout _about;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
@@ -170,6 +172,7 @@ namespace Editor.ShaderDocument
             _colorBlendMode = ScriptableObject.CreateInstance<ShaderReferenceColorBlendMode>();
             _algorithm = ScriptableObject.CreateInstance<ShaderReferenceAlgorithm>();
             _substancePainter = ScriptableObject.CreateInstance<ShaderReferenceSubstancePainter>();
+            _studyWebsite = ScriptableObject.CreateInstance<ShaderReferenceStudyWebsite>();
             _about = ScriptableObject.CreateInstance<ShaderReferenceAbout>();
         }
 
@@ -483,6 +486,13 @@ namespace Editor.ShaderDocument
                     EditorGUILayout.EndScrollView();
                     break;
                 case 16:
+                    _studyWebsite.DrawTitleStudyWebsiteProgram();
+                    _studyWebsite.DrawContentStydyWebsityProgram();
+                    EditorGUILayout.Space(40);
+                    _studyWebsite.DrawTitleStydyWebsityGraphics();
+                    _studyWebsite.DrawContentStydyWebsityGraphics();
+                    break;
+                case 17:
                     _about.DrawTitleURL();
                     EditorGUILayout.Space(50);
                     _about.DrawContentUnityTexture();
