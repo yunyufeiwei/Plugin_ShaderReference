@@ -447,8 +447,10 @@ namespace Editor.ShaderDocument
                     EditorGUILayout.EndScrollView();
                     break;
                 case 13 :
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     _colorBlendMode.DrawTitleColorBlendModePS();
                     _colorBlendMode.DrawContentColorBlendModePS();
+                    EditorGUILayout.EndScrollView();
                     break;
                 case 14:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
