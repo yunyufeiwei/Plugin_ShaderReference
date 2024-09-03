@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace Editor.ShaderDocument
+namespace yuxuetian
 {
     public class ShaderReferenceRenderState : EditorWindow
     {

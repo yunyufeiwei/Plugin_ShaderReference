@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Editor.ShaderDocument
+namespace yuxuetian
 {
     public class ShaderReferenceUtil
     {
