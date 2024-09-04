@@ -14,7 +14,8 @@ namespace yuxuetian
             {
                 if (_texUnity == null)
                 {
-                    string textureString = "Packages/com.yuxuetian.shaderreference/Editor/Resource/kingame.png";
+                    string textureString = "Packages/com.yuxuetian.shaderreference/Resource/Texture/Icon/kingame.png";
+                    
                     _texUnity = LoadTextureFromPath(textureString);
                 }
                 
