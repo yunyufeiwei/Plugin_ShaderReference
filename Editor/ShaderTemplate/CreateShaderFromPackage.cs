@@ -1,10 +1,10 @@
 using System.IO;
-using UnityEngine;
 using UnityEditor;
 
 public class CreateShaderFromPackage : EditorWindow
 {
     private const string RootPath = "Packages/com.yuxuetian.shaderreference/Editor/ShaderTemplate/Shader/";
+    
     [MenuItem("Assets/Create/Shader/UniversalPipeline/UnlitOpaque")]
     static void CreateUnlitOpaqueShader()
     {
@@ -21,7 +21,6 @@ public class CreateShaderFromPackage : EditorWindow
         CreatShaderByPath(shaderPath, fileName);
     }
     
-
     [MenuItem("Assets/Create/Shader/UniversalPipeline/LitOpaque")]
     static void CreateLitOpaqueShader()
     {

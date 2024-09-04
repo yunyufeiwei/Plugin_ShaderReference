@@ -1,4 +1,4 @@
-Shader "Custom/URP/UnlitOpaque"
+Shader "ShaderReference/Template/UnlitOpaque"
 {
     Properties
     {

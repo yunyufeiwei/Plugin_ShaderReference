@@ -1,4 +1,4 @@
-Shader "Custom/URP/LitOpaque"
+Shader "ShaderReference/Template/LitOpaque"
 {
     Properties
     {
