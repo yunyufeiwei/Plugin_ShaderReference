@@ -488,6 +488,7 @@ namespace yuxuetian
                     EditorGUILayout.EndScrollView();
                     break;
                 case 16:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     _studyWebsite.DrawTitleStudyWebsiteForUnity();
                     _studyWebsite.DrawContentStudyWebsiteForUnity();
                     EditorGUILayout.Space(20);
@@ -499,6 +500,10 @@ namespace yuxuetian
                     EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleStudyWebsityCalculatorTools();
                     _studyWebsite.DrawContentStudyWebsityCalculatorTools();
+                    
+                    _studyWebsite.DrawTitleOnlinePPT();
+                    _studyWebsite.DrawContentOnliePPT();
+                    EditorGUILayout.EndScrollView();
                     break;
                 case 17:
                     _about.DrawTitleURL();

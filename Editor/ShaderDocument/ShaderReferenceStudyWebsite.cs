@@ -63,6 +63,16 @@ namespace yuxuetian
             _reference.DrawContentSite("Symbolab计算器", "https://www.symbolab.com/graphing-calculator/linear-graph");
             _reference.DrawContentSite("BRDF3D可视化","https://patapom.com/topics/WebGL/BRDF/");
         }
+
+        public void DrawTitleOnlinePPT()
+        {
+            _reference.DrawTitle("各向异性");
+        }
+
+        public void DrawContentOnliePPT()
+        {
+            _reference.DrawContentSite("HairRendering","https://web.engr.oregonstate.edu/~mjb/cs519/Projects/Papers/HairRendering.pdf");
+        }
     }
 }
 
