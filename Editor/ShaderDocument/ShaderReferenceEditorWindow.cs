@@ -100,6 +100,7 @@ namespace yuxuetian
             "Algorithm(算法)",
             "SubstancePainter",
             "StudyWebsite(学习网址)",
+            "MathGraphical(数学图形函数)",
             "About"
         };
        
@@ -120,6 +121,7 @@ namespace yuxuetian
         private ShaderReferenceAlgorithm _algorithm;
         private ShaderReferenceSubstancePainter _substancePainter;
         private ShaderReferenceStudyWebsite _studyWebsite;
+        private ShaderReferenceMathGraphical _mathGraphical;
         private ShaderReferenceAbout _about;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
@@ -173,6 +175,7 @@ namespace yuxuetian
             _algorithm = ScriptableObject.CreateInstance<ShaderReferenceAlgorithm>();
             _substancePainter = ScriptableObject.CreateInstance<ShaderReferenceSubstancePainter>();
             _studyWebsite = ScriptableObject.CreateInstance<ShaderReferenceStudyWebsite>();
+            _mathGraphical = ScriptableObject.CreateInstance<ShaderReferenceMathGraphical>();
             _about = ScriptableObject.CreateInstance<ShaderReferenceAbout>();
         }
 
@@ -413,6 +416,9 @@ namespace yuxuetian
                     _isFoldMathTextureArraySampler = EditorGUILayout.Foldout(_isFoldMathTextureArraySampler,"TextureArraySampler(纹理数组采样)");
                     _math.DrawContentMahTextureArraySampler(_isFoldMathTextureArraySampler);
                     
+                    // _math.DrawTitleMathGraphical();
+                    // _math.DrawContentMathGraphical();
+                    
                     EditorGUILayout.EndScrollView();
                     break;
                 case 12:
@@ -505,11 +511,17 @@ namespace yuxuetian
                     _studyWebsite.DrawContentOnliePPT();
                     EditorGUILayout.EndScrollView();
                     break;
-                case 17:
+                case 17 :
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    _mathGraphical.DrawTitle();
+                    _mathGraphical.DrawContent();
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 18:
                     _about.DrawTitleURL();
-                    EditorGUILayout.Space(50);
                     _about.DrawContentUnityTexture();
                     break;
+                
             }
         }
     }

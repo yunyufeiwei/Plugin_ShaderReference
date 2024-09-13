@@ -51,7 +51,7 @@ namespace yuxuetian
             style.fixedWidth = 120.0f;
             style.fixedHeight = 120.0f;
             // style.alignment = TextAnchor.MiddleCenter;
-
+            
             GUILayout.Box(texUnity,style);
         }
     }
