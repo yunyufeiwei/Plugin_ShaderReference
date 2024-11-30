@@ -113,7 +113,10 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("ColorMask RGB | A | 0 | R、G、B、A的任意组合", "颜色遮罩，默认值为：RGBA，表示写入RGBA四个通道。");
+                _reference.DrawContent("ColorMask RGB | A | 0 | R、G、B、A的任意组合", "颜色遮罩，默认值为：RGBA，表示写入RGBA四个通道。\n"+
+                                           "_ColorMask (\"Color Mask\", Float) = 15\n" +
+                                           "ColorMask [_ColorMask]\n" +
+                                           "其中这里的15表示的是二进制，15在二进制中表示的是1111，即RGBA都使用。也使用ColorMask RGBA 或者 ColorMask R、ColorMask RG等组合方式。");
             }
         }
 

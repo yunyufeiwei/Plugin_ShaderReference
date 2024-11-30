@@ -506,7 +506,7 @@ namespace yuxuetian
                     EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleStudyWebsityCalculatorTools();
                     _studyWebsite.DrawContentStudyWebsityCalculatorTools();
-                    
+                    EditorGUILayout.Space(20);
                     _studyWebsite.DrawTitleOnlinePPT();
                     _studyWebsite.DrawContentOnliePPT();
                     EditorGUILayout.EndScrollView();
