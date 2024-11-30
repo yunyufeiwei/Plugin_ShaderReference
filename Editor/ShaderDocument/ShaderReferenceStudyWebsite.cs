@@ -62,6 +62,7 @@ namespace yuxuetian
             _reference.DrawContentSite("数学计算器","https://www.desmos.com/calculator?lang=zh-CN");
             _reference.DrawContentSite("Symbolab计算器", "https://www.symbolab.com/graphing-calculator/linear-graph");
             _reference.DrawContentSite("BRDF3D可视化","https://patapom.com/topics/WebGL/BRDF/");
+            _reference.DrawContentSite("二进制计算器","https://tool.oschina.net/hexconvert");
         }
 
         public void DrawTitleOnlinePPT()
