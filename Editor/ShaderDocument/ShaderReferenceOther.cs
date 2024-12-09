@@ -27,8 +27,8 @@ namespace yuxuetian
                 _reference.DrawContent("Category{}", "定义一组所有SubShader共享的命令，位于SubShader外面。");
                 _reference.DrawContent("Name \"MyPassName\"", "给当前Pass指定名称，以便利用UsePass进行调用。");
                 _reference.DrawContent("UsePass \"Shader/NAME\"", "调用其它Shader中的Pass，注意Pass的名称要全部大写！Shader的路径也要写全，以便能找到具体是哪个Shader的哪个Pass。另外加了UsePass后，也要注意相应的Properties要自行添加。");
-                _reference.DrawContent("CustomEditor \"name\"", "自定义材质面板，name为自定义的脚本名称。可利用此功能对材质面板进行个性化自定义。");
                 _reference.DrawContent("Fallback \"name\"", "备胎，当Shader中没有任何SubShader可执行时，则执行FallBack。默认值为Off,表示没有备胎。\n比如URP下默认的紫色报错Shader:Fallback \"Hidden/Universal Render Pipeline/FallbackError\"");
+                _reference.DrawContent("CustomEditor \"name\"", "自定义材质面板，name为自定义的脚本名称。可利用此功能对材质面板进行个性化自定义。");
             }
         }
     }

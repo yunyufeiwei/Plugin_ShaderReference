@@ -142,13 +142,12 @@ namespace yuxuetian
             
             //左侧区域绘制
             EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(width) , GUILayout.MaxHeight(height));
-            _selectedTabID = GUILayout.SelectionGrid(_selectedTabID, _tabName, 1);            
+            _selectedTabID = GUILayout.SelectionGrid(_selectedTabID, _tabName, 1);  
             EditorGUILayout.EndVertical();
 
             //右侧区域绘制
             EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(position.width - width), GUILayout.MinHeight(height));
             DrawMainUI(_selectedTabID);
-            
             EditorGUILayout.EndVertical();
             
             EditorGUILayout.EndHorizontal();
