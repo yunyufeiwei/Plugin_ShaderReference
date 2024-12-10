@@ -15,14 +15,20 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl\n" +
-                                      "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl\"\n" +
-                                      "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl\"\n" +
-                                      "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\n" + 
-                                      "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl");
-                _reference.DrawContent("CBUFFER_START(UnityPerMaterial)/CBUFFER_END","将材质属性面板中的变量定义在这个常量缓冲区中，用于支持SRP Batcher.");
-                _reference.DrawContent("HLSLPROGRAM/ENDHLSL", "HLSL代码的开始与结束.");
-                _reference.DrawContent("HLSLINCLUDE/ENDHLSL", "通常用于定义多段vert/frag函数，然后这段CG代码会插入到所有Pass的CG中，根据当前Pass的设置来选择加载.");
+                _reference.DrawContent("#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\"\n" + 
+                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl\"");
+                _reference.DrawContent("CBUFFER_START(UnityPerMaterial)\n"+
+                                       "CBUFFER_END\n" +
+                                        "","将材质属性面板中的变量定义在这个常量缓冲区中，用于支持SRP Batcher.");
+                _reference.DrawContent("HLSLPROGRAM\n"+
+                                       "ENDHLSL\n"+
+                                       "", "HLSL代码的开始与结束.");
+                _reference.DrawContent("HLSLINCLUDE\n"+
+                                       "ENDHLSL\n"+
+                                       "", "通常用于定义多段vert/frag函数，然后这段CG代码会插入到所有Pass的CG中，根据当前Pass的设置来选择加载.");
                 _reference.DrawContent("LOD", "Shader LOD，可利用脚本来控制LOD级别，通常用于不同配置显示不同的SubShader。注意SubShader要从高往低写，要不然会无法生效.");
                 _reference.DrawContent("Category{}", "定义一组所有SubShader共享的命令，位于SubShader外面。");
                 _reference.DrawContent("Name \"MyPassName\"", "给当前Pass指定名称，以便利用UsePass进行调用。");

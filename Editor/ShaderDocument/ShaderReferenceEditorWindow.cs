@@ -16,6 +16,7 @@ namespace yuxuetian
         
         private bool _isFoldSemanticsAttribute = true;
         private bool _isFoldSemanticsVaryings = true;
+        private bool _isFoldSemanticsPixelShading = true;
 
         private bool _isFoldTagQueue = true;
         private bool _isFoldTagRenderType = true;
@@ -68,6 +69,7 @@ namespace yuxuetian
         private bool _isFoldLightingEnvironmentColor = true;
 
         private bool _isFoldAlgorithmUVShape = true;
+        private bool _isFoldAlgorithmuvTransform = true;
         private bool _isFoldAlgorithmVertex = true;
         private bool _isFoldAlgorithmColor = true;
         private bool _isFoldAlgorithmLight = true;
@@ -231,6 +233,13 @@ namespace yuxuetian
                     _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
                     _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
                     
+                    _semantics.DrawTitlePixelShading();
+                    _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
+                    _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
+                    
+                    _semantics.DrawTitleSemanticsWebsite();
+                    _semantics.DrawContentSemanticsWebsite();
+                    
                     EditorGUILayout.EndScrollView();
                     break;
                 case 3:
@@ -329,12 +338,15 @@ namespace yuxuetian
                     _transformation.DrawTitleSpaceTransformationMatrix();
                     _isFoldTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationMatrix, "空间变换(矩阵)");
                     _transformation.DrawContentSpaceTransformationMatrix(_isFoldTransformationMatrix);
+                    
                     _transformation.DrawTitleSpaceTransformationFunction();
                     _isFoldTransformationFunction = EditorGUILayout.Foldout(_isFoldTransformationFunction, "空间变换(方法)");
                     _transformation.DrawContentSpaceTransformationFunction(_isFoldTransformationFunction);
+                    
                     _transformation.DrawTitleBaseTransformationMatrix();
                     _isFoldTransformationBaseTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationBaseTransformationMatrix, "基础变换矩阵");
                     _transformation.DrawContentBaseTransformationMatrix(_isFoldTransformationBaseTransformationMatrix);
+                    
                     _transformation.DrawTitleTransformationRules();
                     _transformation.DrawContentTransformationRules();
                     
@@ -354,12 +366,15 @@ namespace yuxuetian
                     
                     _buildInVariables.DrawTitleVert();
                     _buildInVariables.DrawContentVert();
+                    
                     _buildInVariables.DrawTitleBuildInVariabledCameraAndScreen();
                     _isFoldBuildInVariablesCameraAndScreen = EditorGUILayout.Foldout(_isFoldBuildInVariablesCameraAndScreen, "CameraAndScreen");
                     _buildInVariables.DrawContentBuildInVariabledCameraAndScreen(_isFoldBuildInVariablesCameraAndScreen);
+                    
                     _buildInVariables.DrawTitleBuildInVariablesTime();
                     _isFoldBuildInVariablesTime = EditorGUILayout.Foldout(_isFoldBuildInVariablesTime, "Time");
                     _buildInVariables.DrawContentBuildInVariablesTime(_isFoldBuildInVariablesTime);
+                    
                     _buildInVariables.DrawTitleBuidInVariablesGPUInstancing();
                     _isFoldBuildInVariablesGPUInstancing = EditorGUILayout.Foldout(_isFoldBuildInVariablesGPUInstancing, "GPUInstancing");
                     _buildInVariables.DrawContentBuildInVariablesGPUInstancing(_isFoldBuildInVariablesGPUInstancing);
@@ -459,18 +474,27 @@ namespace yuxuetian
                     break;
                 case 14:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
                     _algorithm.DrawTitleAlgorithmUVShape();
                     _isFoldAlgorithmUVShape = EditorGUILayout.Foldout(_isFoldAlgorithmUVShape, "UVShape");
                     _algorithm.DrawContentAlgorithmUVShape(_isFoldAlgorithmUVShape);
-                    _algorithm.DrawTitleAlgorithmColor();
-                    _isFoldAlgorithmColor = EditorGUILayout.Foldout(_isFoldAlgorithmColor, "Color");
-                    _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmColor);
+                    
+                    _algorithm.DrawTitleuvTransform();
+                    _isFoldAlgorithmuvTransform = EditorGUILayout.Foldout(_isFoldAlgorithmuvTransform, "UVTransform");
+                    _algorithm.DrawContentuvTransform(_isFoldAlgorithmuvTransform);
+                    
                     _algorithm.DrawTitleAlgorithmVertex();
                     _isFoldAlgorithmVertex = EditorGUILayout.Foldout(_isFoldAlgorithmVertex, "Vertex");
                     _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmVertex);
+                    
+                    _algorithm.DrawTitleAlgorithmColor();
+                    _isFoldAlgorithmColor = EditorGUILayout.Foldout(_isFoldAlgorithmColor, "Color");
+                    _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmColor);
+                    
                     _algorithm.DrawTitleAlgorithmLight();
                     _isFoldAlgorithmLight = EditorGUILayout.Foldout(_isFoldAlgorithmLight, "Light");
                     _algorithm.DrawContentAlgorithmLight(_isFoldAlgorithmLight);
+                    
                     _algorithm.DrawTitleAlgorithmOther();
                     _isFoldAlgorithmFresnel = EditorGUILayout.Foldout(_isFoldAlgorithmFresnel, "Fresnel");
                     _algorithm.DrawContentAlgorithmFresnel(_isFoldAlgorithmFresnel);
@@ -478,6 +502,7 @@ namespace yuxuetian
                     _algorithm.DrawContnetAlgorithmXRar(_isFoldAlgorithmFresnel);
                     _isFoldAlgorithmDither = EditorGUILayout.Foldout(_isFoldAlgorithmDither, "Dither");
                     _algorithm.DrawContentAlgorithmDither(_isFoldAlgorithmXRay);
+                    
                     EditorGUILayout.EndScrollView();
                     break;
                 case 15:

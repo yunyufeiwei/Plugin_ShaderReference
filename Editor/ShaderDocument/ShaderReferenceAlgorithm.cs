@@ -15,7 +15,6 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("UV重映射到中心位置", "float2 centerUV = uv * 2 - 1\n将UV值重映射为(-1,-1)~(1,1)，也就是将UV的中心点从左下角移动到中间位置。");
                 _reference.DrawContent("画圆", "float circle = smoothstep(_Radius, (_Radius + _CircleFade), length(uv * 2 - 1));\n利用UV来画圆，通过_Radius来调节大小，_CircleFade来调节边缘虚化程序。");
                 _reference.DrawContent("画矩形", "float2 centerUV = abs(i.uv.xy * 2 - 1);\n" +
                                           "float rectangleX = smoothstep(_Width, (_Width + _RectangleFade), centerUV.x);\n" +
@@ -34,17 +33,31 @@ namespace yuxuetian
                                           "float d = max((uv.x*0.9+uv.y*0.5),uv.y);\n" +
                                           "d = step(d,_Size);\n" +
                                           "return d;");
-                _reference.DrawContent("极坐标", "float2 centerUV = (i.uv * 2 - 1);\n" +
-                                          "float atan2UV = 1 - abs(atan2(centerUV.g, centerUV.r) / 3.14);\n" +
-                                          "利用UV来实现极坐标.");
+                
                 _reference.DrawContent("将0-1的值控制在某个自定义的区间内", "frac(x*n+n);\n比如frac(i.uv*3.33+3.33);就是将0-1的uv值重新定义为0.33-0.66");
                 _reference.DrawContent("随机", "1.float2 uv = floor(i.uv.xy*24);\n2.frac(sin(dot(uv, float2(12.9898, 78.233))) * 43758.5453);\n或者:frac(sin(x)*n);");
-                _reference.DrawContent("旋转", "fixed t=_Time.y;\nfloat2 rot= cos(t)*i.uv+sin(t)*float2(i.uv.y,-i.uv.x);");
-                _reference.DrawContent("从中心缩放纹理", "half2 offset = (0.5-i.uv.xy)*_Offset;\nhalf4 baseMap = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv.xy + offset);");
                 _reference.DrawContent("序列图", "splitUV是把原有的UV重新定位到左上角的第一格UV上，_Sequence.xy表示的是纹理是由几x几的格子组成的,_Sequence.z表示的是走序列的快慢." +
                                           "\nfloat2 splitUV = uv * (1/_Sequence.xy) + float2(0,_Sequence.y - 1/_Sequence.y);" +
                                           "\nfloat time = _Time.y * _Sequence.z;" +
                                           "\nuv = splitUV + float2(floor(time *_Sequence.x)/_Sequence.x,1-floor(time)/_Sequence.y);");
+            }
+        }
+
+        public void DrawTitleuvTransform()
+        {
+            _reference.DrawTitle("UV变换");
+        }
+
+        public void DrawContentuvTransform(bool isFold)
+        {
+            if (isFold)
+            {
+                _reference.DrawContent("UV重映射到中心位置", "float2 centerUV = uv * 2 - 1\n将UV值重映射为(-1,-1)~(1,1)，也就是将UV的中心点从左下角移动到中间位置。");
+                _reference.DrawContent("从中心缩放纹理", "half2 offset = (0.5-i.uv.xy)*_Offset;\nhalf4 baseMap = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv.xy + offset);");
+                _reference.DrawContent("旋转", "float t=_Time.y;\nfloat2 rot= cos(t)*i.uv+sin(t)*float2(i.uv.y,-i.uv.x);");
+                _reference.DrawContent("极坐标", "float2 centerUV = (i.uv * 2 - 1);\n" +
+                                              "float atan2UV = 1 - abs(atan2(centerUV.g, centerUV.r) / 3.14);\n" +
+                                              "利用UV来实现极坐标.");
             }
         }
 
