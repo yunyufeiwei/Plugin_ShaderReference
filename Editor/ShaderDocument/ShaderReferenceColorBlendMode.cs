@@ -6,12 +6,12 @@ namespace yuxuetian
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
 
-        public void DrawTitleColorBlendModePS()
+        public void DrawTitleColorBlendMode()
         {
             _reference.DrawTitle("PS中的混合公式(A、B为图层)");
         }
 
-        public void DrawContentColorBlendModePS()
+        public void DrawContentColorBlendMode()
         {
             _reference.DrawContent("正常", "A*(1-B.a)+B*(B.a)");
             _reference.DrawContent("变暗", "min(A,B)");
