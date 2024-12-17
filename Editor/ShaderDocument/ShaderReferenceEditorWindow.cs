@@ -57,8 +57,6 @@ namespace yuxuetian
         private bool _isFoldPredefineMacrosOther = true;
         //数学
         private bool _isFoldMathFunction = true;
-        private bool _isFoldMathTextureSampler = true;
-        private bool _isFoldMathTextureArraySampler = true;
         //光照模型
         private bool _isFoldLightingLightModel = true;
         private bool _isFoldLightingNormal = true;
@@ -68,9 +66,6 @@ namespace yuxuetian
         private bool _isFoldLightingFog = true;
         private bool _isFoldLightingBake = true;
         private bool _isFoldLightingEnvironmentColor = true;
-        //纹理采样
-        private bool _isFoldTextureSampler = true;
-        private bool _isFoldTextureArraySampler = true;
         //算法
         private bool _isFoldAlgorithmUVShape = true;
         private bool _isFoldAlgorithmuvTransform = true;
@@ -80,6 +75,9 @@ namespace yuxuetian
         private bool _isFoldAlgorithmFresnel = true;
         private bool _isFoldAlgorithmXRay = true;
         private bool _isFoldAlgorithmDither = true;
+        //纹理采样
+        private bool _isFoldTextureSampler = true;
+        private bool _isFoldTextureArraySampler = true;
         //SubstancePainter
         private bool _isFoldSubstancePainterMaterialProperty = true;
         private bool _isFoldSubstancePainterFrag = true;
@@ -103,8 +101,8 @@ namespace yuxuetian
             "Math(数学)",
             "LightingMode(光照模型)",
             "TextureSampler(纹理采样)",
-            "ColorBlendMode(颜色混合)",
             "Algorithm(常用算法)",
+            "ColorBlendMode(颜色混合)",
             "SubstancePainter",
             "StudyWebsite(学习网址)",
             "MathGraphical学图形函数)",
@@ -125,8 +123,8 @@ namespace yuxuetian
         private ShaderReferenceMath _math;
         private ShaderReferenceLighting _lighting;
         private ShaderReferenceTextureSampler _textureSampler;
-        private ShaderReferenceColorBlendMode _colorBlendMode;
         private ShaderReferenceAlgorithm _algorithm;
+        private ShaderReferenceColorBlendMode _colorBlendMode;
         private ShaderReferenceSubstancePainter _substancePainter;
         private ShaderReferenceStudyWebsite _studyWebsite;
         private ShaderReferenceMathGraphical _mathGraphical;
@@ -179,8 +177,8 @@ namespace yuxuetian
             _math = ScriptableObject.CreateInstance<ShaderReferenceMath>();
             _lighting = ScriptableObject.CreateInstance<ShaderReferenceLighting>();
             _textureSampler = ScriptableObject.CreateInstance<ShaderReferenceTextureSampler>();
-            _colorBlendMode = ScriptableObject.CreateInstance<ShaderReferenceColorBlendMode>();
             _algorithm = ScriptableObject.CreateInstance<ShaderReferenceAlgorithm>();
+            _colorBlendMode = ScriptableObject.CreateInstance<ShaderReferenceColorBlendMode>();
             _substancePainter = ScriptableObject.CreateInstance<ShaderReferenceSubstancePainter>();
             _studyWebsite = ScriptableObject.CreateInstance<ShaderReferenceStudyWebsite>();
             _mathGraphical = ScriptableObject.CreateInstance<ShaderReferenceMathGraphical>();
@@ -452,6 +450,9 @@ namespace yuxuetian
                 case 12:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
+                    _lighting.DrawTitleLightModeInfo();
+                    _lighting.DrawContentLightModelInfo();
+                    
                     _lighting.DrawTitleLightModel();
                     _isFoldLightingLightModel = EditorGUILayout.Foldout(_isFoldLightingLightModel, "LightModel");
                     _lighting.DrawContentLightModel(_isFoldLightingLightModel);
@@ -493,7 +494,7 @@ namespace yuxuetian
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _textureSampler.DrawTitleTextureSampler();
-                    _isFoldTextureSampler = EditorGUILayout.Foldout(_isFoldTextureSampler, "普通纹理采样");
+                    _isFoldTextureSampler = EditorGUILayout.Foldout(_isFoldTextureSampler, "纹理采样");
                     _textureSampler.DrawContentTextureSampler(_isFoldTextureSampler);
                     
                     _textureSampler.DrawTitleTextureArraySampler();
@@ -505,25 +506,17 @@ namespace yuxuetian
                 case 14 :
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
-                    _colorBlendMode.DrawTitleColorBlendMode();
-                    _colorBlendMode.DrawContentColorBlendMode();
-                    
-                    EditorGUILayout.EndScrollView();
-                    break;
-                case 15:
-                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-                    
-                    _algorithm.DrawTitleAlgorithmUVShape();
-                    _isFoldAlgorithmUVShape = EditorGUILayout.Foldout(_isFoldAlgorithmUVShape, "UVShape");
-                    _algorithm.DrawContentAlgorithmUVShape(_isFoldAlgorithmUVShape);
+                    _algorithm.DrawTitleAlgorithmVertex();
+                    _isFoldAlgorithmVertex = EditorGUILayout.Foldout(_isFoldAlgorithmVertex, "Vertex");
+                    _algorithm.DrawContentAlgorithmVertex(_isFoldAlgorithmVertex);
                     
                     _algorithm.DrawTitleuvTransform();
                     _isFoldAlgorithmuvTransform = EditorGUILayout.Foldout(_isFoldAlgorithmuvTransform, "UVTransform");
                     _algorithm.DrawContentuvTransform(_isFoldAlgorithmuvTransform);
                     
-                    _algorithm.DrawTitleAlgorithmVertex();
-                    _isFoldAlgorithmVertex = EditorGUILayout.Foldout(_isFoldAlgorithmVertex, "Vertex");
-                    _algorithm.DrawContentAlgorithmColor(_isFoldAlgorithmVertex);
+                    _algorithm.DrawTitleAlgorithmUVShape();
+                    _isFoldAlgorithmUVShape = EditorGUILayout.Foldout(_isFoldAlgorithmUVShape, "UVShape");
+                    _algorithm.DrawContentAlgorithmUVShape(_isFoldAlgorithmUVShape);
                     
                     _algorithm.DrawTitleAlgorithmColor();
                     _isFoldAlgorithmColor = EditorGUILayout.Foldout(_isFoldAlgorithmColor, "Color");
@@ -540,6 +533,14 @@ namespace yuxuetian
                     _algorithm.DrawContnetAlgorithmXRar(_isFoldAlgorithmFresnel);
                     _isFoldAlgorithmDither = EditorGUILayout.Foldout(_isFoldAlgorithmDither, "Dither");
                     _algorithm.DrawContentAlgorithmDither(_isFoldAlgorithmXRay);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 15:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _colorBlendMode.DrawTitleColorBlendMode();
+                    _colorBlendMode.DrawContentColorBlendMode();
                     
                     EditorGUILayout.EndScrollView();
                     break;

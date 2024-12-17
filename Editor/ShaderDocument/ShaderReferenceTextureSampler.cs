@@ -1,14 +1,15 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace yuxuetian
 {
     public class ShaderReferenceTextureSampler : EditorWindow
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
-        
+
         public void DrawTitleTextureSampler()
         {
-            _reference.DrawTitle("TextureSampler(普通纹理采样)");
+            _reference.DrawTitle("TextureSampler(纹理采样)");
         }
         public void DrawContentTextureSampler(bool isFoldout)
         {
@@ -16,10 +17,10 @@ namespace yuxuetian
             {
                 _reference.DrawContent("TEXTURE2D (textureName);",
                     "二维纹理的定义(纹理与采样器分离定义),此功能在OpenGL ES2.0上不支持，会使用原来sampler2D的形式.\n" +
-                    "textureName:Properties中声明的2D纹理.");
+                    "textureName:Properties中声明的2D纹理名称.");
                 _reference.DrawContent("TEXTURECUBE (textureName);",
                     "立方体纹理的定义(纹理与采样器分离定义),此功能在OpenGL ES2.0上不支持，会使用原来samplerCube的形式.\n" +
-                    "textureName:Properties中声明的立方体纹理.");
+                    "textureName:Properties中声明的立方体纹理名称.");
                 _reference.DrawContent("SAMPLER(samplerName);",
                     "采样器的定义(纹理与采样器分离定义),采样器是指纹理的过滤模式与重复模式,此功能在OpenGL ES2.0上不支持，相当于没写.\n" +
                     "1.SAMPLER(sampler_textureName):sampler+纹理名称，这种定义形式是表示采用textureName这个纹理Inspector面板中的采样方式.\n" +
@@ -27,8 +28,12 @@ namespace yuxuetian
                     "3.SAMPLER(_filter_wrapU_wrapV):比如SAMPLER(sampler_linear_clampU_mirrorV),可同时设置重复模式的U与V的不同值.\n" +
                     "4.filter:point/linear/triLinear\n" +
                     "5.wrap:clamp/repeat/mirror/mirrorOnce");
+                
+                GUILayout.Space(20);
                 _reference.DrawContent("float4 [textureName]_ST;", "获取纹理的Tiling(.xy)和Offset(.zw)");
                 _reference.DrawContent("float4 [textureName]_TexelSize;", "获取纹理的宽高分之一(.xy)和宽高(.zw)");
+                
+                GUILayout.Space(20);
                 _reference.DrawContent("SAMPLE_TEXTURE2D(textureName, samplerName, coord);", "进行二维纹理采样操作\n" +
                     "textureName:Properties中声明的2D纹理名称\n" +
                     "samplerName:此纹理所使用的采样器设置\n" +

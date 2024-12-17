@@ -6,6 +6,19 @@ namespace yuxuetian
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
 
+        public void DrawTitleLightModeInfo()
+        {
+            _reference.DrawTitle("光照模型概念");
+        }
+        public void DrawContentLightModelInfo()
+        {
+            _reference.DrawContent("光照模型:","有时也被称为着色模型(Shading Modle)，有时也使用术语反射模型(Reflection Model),进一步使术语复杂化。\n"+
+                                                     "目前最常见的光照模型称为 ADS 模型,因此给予标记为A、D、S的三种类型反射。\n"+
+                                                     "A:\t环境光反射(Ambient reflection)模型低级光照，影响场景中的所有物体。\n"+
+                                                     "D:\t漫反射(Diffuse reflection)根据光线的入射角度调整物体的亮度。\n"+
+                                                     "S:\t镜面反射(Specular reflection)用以暂时物体的光泽度，通过在物体表面上，光照最直接的反射到我们的眼睛的位置，策略性的放置适当大小的高光来实现。");
+        }
+        
         public void DrawTitleLightModel()
         {
             _reference.DrawTitle("LightModel(光照模型)");
@@ -14,36 +27,55 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("Lambertian", "Diffuse = Ambient + Kd * LightColor * max(0,dot(N,L))\n" +
-                                                     "Diffuse:\t最终物体上的漫反射光强.\n" +
-                                                     "Ambient:\t环境光强度，为了简化计算，环境光强采用一个常数表示.\n" +
-                                                     "Kd:\t物体材质对光的反射系数.\n" +
-                                                     "LightColor:\t光源的强度.\n" +
-                                                     "N:\t顶点的单位法线向量.\n" +
-                                                     "L:\t顶点指向光源的单位向量.");
-                _reference.DrawContent("Phong", "Specular = SpecularColor * Ks * pow(max(0,dot(R,V)), Shininess)\n" +
-                                                "Specular:\t最终物体上的反射高光光强.\n" +
-                                                "SpecularColor:\t反射光的颜色.\n" +
-                                                "Ks:\t反射强度系数.\n" +
-                                                "R:\t反射向量，可使用2 * N * dot(N,L) - L或者reflect (-L,N)获得.\n" +
-                                                "V:\t观察方向.\n" +
-                                                "N:\t顶点的单位法线向量.\n" +
-                                                "L:\t顶点指向光源的单位向量.\n" +
-                                                "Shininess:\t乘方运算来模拟高光的变化.");
-                _reference.DrawContent("Blinn-Phong", "Specular = SpecularColor * Ks * pow(max(0,dot(N,H)), Shininess)\n" +
-                                                      "Specular:\t最终物体上的反射高光光强.\n" +
-                                                      "SpecularColor:\t反射光的颜色.\n" +
-                                                      "Ks:\t反射强度系数.\n" +
-                                                      "N:\t顶点的单位法线向量.\n" +
-                                                      "H:\t入射光线L与视线V的中间向量，也称为半角向量H = normalize(L+V).\n" +
-                                                      "Shininess:\t乘方运算来模拟高光的变化.");
+                _reference.DrawContent("Lambert", "Diffuse = Ambient + Kd * LightColor * max(0,dot(N,L))\n" +
+                                                          "Diffuse:\t最终物体上的漫反射光强。\n" +
+                                                          "Ambient:\t环境光强度，为了简化计算，环境光强采用一个常数表示。\n" +
+                                                          "Kd:\t物体材质对光的反射系数。\n" +
+                                                          "LightColor:\t光源的颜色。\n" +
+                                                          "N:\t顶点的单位法线向量。\n" +
+                                                          "L:\t顶点指向光源的单位向量。");
+                
+                _reference.DrawContent("Half-Lambert","Diffuse = Ambient + Kd * LightColor * (dot(N,L) * 0.5 + 0.5)\n" +
+                                                              "Diffuse:\t最终物体上的漫反射光强。\n" +
+                                                              "Ambient:\t环境光强度，为了简化计算，环境光强采用一个常数表示。\n" +
+                                                              "Kd:\t物体材质对光的反射系数。\n" +
+                                                              "LightColor:\t光源的颜色。\n" +
+                                                              "N:\t顶点的单位法线向量。\n" +
+                                                              "L:\t顶点指向光源的单位向量。");
+                
+                _reference.DrawContent("Phong", "Specular = SpecularColor * Ks * pow(max(0,dot(R,V)), Shininess)\n"+
+                                                        "Phong模型属于高光模型，在像素阶段计算时被称为Phong，在顶点阶段计算时，被称为(Gouraud Lighting)。\n" +
+                                                        "Specular:\t最终物体上的反射高光光强.\n" +
+                                                        "SpecularColor:\t反射光的颜色。\n" +
+                                                        "Ks:\t反射强度系数。\n" +
+                                                        "R:\t反射向量，可使用2 * N * dot(N,L) - L或者reflect (-L,N)获得。\n" +
+                                                        "V:\t观察方向。\n" +
+                                                        "N:\t顶点的单位法线向量。\n" +
+                                                        "L:\t顶点指向光源的单位向量。\n" +
+                                                        "Shininess:\t乘方运算来模拟高光的变化。");
+                
+                _reference.DrawContent("Blinn-Phong", "Specular = SpecularColor * Ks * pow(max(0,dot(N,H)), Shininess)\n"+
+                                                              "在像素着色器阶段计算。\n" +
+                                                              "Specular:\t最终物体上的反射高光光强.\n" +
+                                                              "SpecularColor:\t反射光的颜色.\n" +
+                                                              "Ks:\t反射强度系数。\n" +
+                                                              "N:\t顶点的单位法线向量。\n" +
+                                                              "H:\t入射光线L与视线V的中间向量，也称为半角向量H = normalize(L+V)。\n" +
+                                                              "Shininess:\t乘方运算来模拟高光的变化。");
+                
                 _reference.DrawContent("BRDF", "f(l,v) = diffuse + D(h)F(v,h)G(l,v,h)/4cos(n·l)cos(n·v)\n" +
-                                               "f(l,v):\t双向反射分布函数的最终值,l表示光的方向,v表示视线的方向.\n" +
-                                               "diffuse:\t漫反射.\n" +
-                                               "D(h):\t法线分布函数(Normal Distribution Function),描述微面元法线分布的概率,即朝向正确的法线浓度.h为半角向量,表示光的方向与反射方向的半角向量,只有物体的微表面法向m = h时,才会反射到视线中.\nD(h) = roughness^2 / π((n·h)^2(roughness^2-1)+1)^2\n" +
-                                               "F(v,h):\t菲涅尔方程(Fresnel Equation),描述不同的表面角下表面所反射的光线所占的比率.\nF(v,h) = F0 + (1-F0)(1-(v·h))^5(F0是0度入射角的菲涅尔反射值)\n" +
-                                               "G(l,v,h):\t几何函数(Geometry Function),描述微平面自成阴影的属性,即微表面法向m = h的并未被遮蔽的表面点的百分比.\n" +
-                                               "4cos(n·l)cos(n·v):\t校正因子(correctionfactor)作为微观几何的局部空间和整个宏观表面的局部空间之间变换的微平面量的校正.");
+                                                       "f(l,v):\t双向反射分布函数的最终值,l表示光的方向,v表示视线的方向。\n" +
+                                                       "diffuse:\t漫反射。\n" +
+                                                       "D(h):\t法线分布函数(Normal Distribution Function),描述微面元法线分布的概率,即朝向正确的法线浓度.h为半角向量,表示光的方向与反射方向的半角向量,只有物体的微表面法向m = h时,才会反射到视线中.\nD(h) = roughness^2 / π((n·h)^2(roughness^2-1)+1)^2\n" +
+                                                       "F(v,h):\t菲涅尔方程(Fresnel Equation),描述不同的表面角下表面所反射的光线所占的比率.\nF(v,h) = F0 + (1-F0)(1-(v·h))^5(F0是0度入射角的菲涅尔反射值)。\n" +
+                                                       "G(l,v,h):\t几何函数(Geometry Function),描述微平面自成阴影的属性,即微表面法向m = h的并未被遮蔽的表面点的百分比。\n" +
+                                                       "4cos(n·l)cos(n·v):\t校正因子(correctionfactor)作为微观几何的局部空间和整个宏观表面的局部空间之间变换的微平面量的校正。");
+                
+                _reference.DrawContent("Kajiya-Kay Model","常用的各向异性光照模型,该模型属于光照模型的高光部分。\n"+
+                                                          "sin(T,H) = sqrt(1 - dot(T,H)^2)。\n"+
+                                                          "sqrt:平方根公式。\n"+
+                                                          "T：顶点的副切线方向，或者是法线贴图的副切线方向。\n"+
+                                                          "H：半角向量，halfDir = normalize(worldLightDir + worldViewDir);");
             }
         }
 
@@ -91,6 +123,19 @@ namespace yuxuetian
                                            "float3 u = B.xyz * float3(-1.0, -1.0, 1.0);\n" +
                                            "float3 r = (t / t.z) * dot(t, u) - u;\n" +
                                            "return r;");
+        }
+        
+        public void DrawTitleAlgorithmLight()
+        {
+            _reference.DrawTitle("Light(光照)");
+        }
+
+        public void DrawContentAlgorithmLight(bool isFold)
+        {
+            if (isFold)
+            {
+                
+            }
         }
 
         public void DrawTitleMainLight()
