@@ -131,7 +131,7 @@ namespace yuxuetian
         private ShaderReferenceAbout _about;
         
         //快捷键组合方式 #-shift %-Ctrl &-Alt
-        [MenuItem("Window/ShaderReference #R" ,false, 101)]
+        [MenuItem("ShaderTool/ShadserReference #R" ,false, 101)]
         public static void ShowWindow()
         {
             EditorWindow window = GetWindow<ShaderReferenceEditorWindow>();
