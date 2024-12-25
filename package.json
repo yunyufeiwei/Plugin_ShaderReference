@@ -7,5 +7,13 @@
 	{
 		"name":"yuxuetian",
 		"email":"yuxuetian_@126.com"
-	}
+	},
+	"samples":
+	[
+		{
+			"displayName":"SampleMaps",
+			"description":"Example Shader Map",
+			"path":"Samples~/SampleMaps"
+		}
+	]
 }
