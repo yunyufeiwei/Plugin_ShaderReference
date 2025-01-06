@@ -5,6 +5,23 @@ namespace yuxuetian
     public class ShaderReferenceTransformation : EditorWindow
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
+        
+        public void DrawTitleTransformationBase()
+        {
+            _reference.DrawTitle("位置与方向(矢量)");
+        }
+
+        public void DrawContentTransformationBase()
+        {
+            _reference.DrawContent("矢量表示写法", "Unity提供的内置矩阵是4X4的矩阵，与矢量左乘(矩阵放左边)就能得到变换新坐标后的矢量数据.\n" +
+                                             "Unity矢量必须写成四维度而不是三维，位置写成(x,y,z,1),方向写成(x,y,z,0)\n" +
+                                             "例如：\n" +
+                                             "模型空间的顶点位置变换到世界空间的顶点位置:\n" +
+                                             "float3 positionWS = mul(UNITY_MATRIX_M , float4(positionOS , 1).xyz;\n" +
+                                             "模型空间的法线方向变换到相机空间的法线方向:\n" +
+                                             "方法一：float3 normalVS = mul(UNITY_MATRIX_IT_MV , float4(normalOS , 0)).xyz);\n" +
+                                             "方法二：float3 normalVS = mul((float3x3)UNITY_MATRIX_IT_MV , normalOS);");
+        }
 
         public void DrawTitleSpaceTransformationMatrix()
         {
@@ -15,18 +32,18 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("UNITY_MATRIX_M", "模型变换矩阵:unity_ObjectToWorld");
-                _reference.DrawContent("UNITY_MATRIX_I_M", "模型变换逆矩阵:unity_WorldToObject");
-                _reference.DrawContent("UNITY_MATRIX_V", "视图变换矩阵:unity_MatrixV");
-                _reference.DrawContent("UNITY_MATRIX_I_V", "视图变换逆矩阵:unity_MatrixInvV");
-                _reference.DrawContent("UNITY_MATRIX_P", "投影变换矩阵:OptimizeProjectionMatrix(glstate_matrix_projection)");
-                _reference.DrawContent("UNITY_MATRIX_I_P", "投影变换逆矩阵:ERROR_UNITY_MATRIX_I_P_IS_NOT_DEFINED");
-                _reference.DrawContent("UNITY_MATRIX_VP", "视图投影变换矩阵:unity_MatrixVP");
-                _reference.DrawContent("UNITY_MATRIX_I_VP", "视图投影变换逆矩阵:_InvCameraViewProj");
-                _reference.DrawContent("UNITY_MATRIX_MV", "模型视图变换矩阵:mul(UNITY_MATRIX_V, UNITY_MATRIX_M)");
-                _reference.DrawContent("UNITY_MATRIX_T_MV", "模型视图变换转置矩阵:transpose(UNITY_MATRIX_MV)");
-                _reference.DrawContent("UNITY_MATRIX_IT_MV", "模型视图变换转置逆矩阵:transpose(mul(UNITY_MATRIX_I_M, UNITY_MATRIX_I_V))");
-                _reference.DrawContent("UNITY_MATRIX_MVP", "模型视图投影变换矩阵:mul(UNITY_MATRIX_VP, UNITY_MATRIX_M)");
+                _reference.DrawContent("UNITY_MATRIX_M", "模型变换矩阵(unity_ObjectToWorld):通常用于把矢量从模型空间变换到世界空间");
+                _reference.DrawContent("UNITY_MATRIX_I_M", "模型变换逆矩阵(unity_WorldToObject):通常用于把矢量从世界空间变换到模型空间");
+                _reference.DrawContent("UNITY_MATRIX_V", "视图变换矩阵(unity_MatrixV):通常用于把矢量从世界空间变换到相机空间");
+                _reference.DrawContent("UNITY_MATRIX_I_V", "视图变换逆矩阵(unity_MatrixInvV):通常用于把矢量从相机空间变换到世界空间");
+                _reference.DrawContent("UNITY_MATRIX_P", "投影变换矩阵(OptimizeProjectionMatrix(glstate_matrix_projection)):通常用于把矢量从相机空间变换到裁剪空间");
+                _reference.DrawContent("UNITY_MATRIX_I_P", "投影变换逆矩阵(ERROR_UNITY_MATRIX_I_P_IS_NOT_DEFINED):通常用于把矢量从裁剪空间变换到相机");
+                _reference.DrawContent("UNITY_MATRIX_VP", "视图投影变换矩阵(unity_MatrixVP):通常用于把矢量从世界空间变换到裁剪空间");
+                _reference.DrawContent("UNITY_MATRIX_I_VP", "视图投影变换逆矩阵(_InvCameraViewProj):通常用于把矢量从裁剪空间变换到世界空间");
+                _reference.DrawContent("UNITY_MATRIX_MV", "模型视图变换矩阵(mul(UNITY_MATRIX_V, UNITY_MATRIX_M)):通常用于把矢量从模型空间变换到相机空间");
+                _reference.DrawContent("UNITY_MATRIX_T_MV", "模型视图变换转置矩阵(transpose(UNITY_MATRIX_MV)):模型视图矩阵的转置式");
+                _reference.DrawContent("UNITY_MATRIX_IT_MV", "模型视图变换转置逆矩阵(transpose(mul(UNITY_MATRIX_I_M, UNITY_MATRIX_I_V))):把法线从模型空间变换到相机空间");
+                _reference.DrawContent("UNITY_MATRIX_MVP", "模型视图投影变换矩阵(mul(UNITY_MATRIX_VP, UNITY_MATRIX_M)):通常用于把矢量从模型空间变换到裁剪空间");
             }
         }
 
@@ -107,6 +124,8 @@ namespace yuxuetian
                 "       = (M_BA)^-1 * P_A\n" +
                 "       = (M_BA)^T * P_A)");
         }
+
+        
     }
 }
 

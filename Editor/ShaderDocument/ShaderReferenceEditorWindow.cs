@@ -348,6 +348,9 @@ namespace yuxuetian
                 case 6:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
+                    _transformation.DrawTitleTransformationBase();
+                    _transformation.DrawContentTransformationBase();
+                    
                     _transformation.DrawTitleSpaceTransformationMatrix();
                     _isFoldTransformationMatrix = EditorGUILayout.Foldout(_isFoldTransformationMatrix, "空间变换(矩阵)");
                     _transformation.DrawContentSpaceTransformationMatrix(_isFoldTransformationMatrix);
