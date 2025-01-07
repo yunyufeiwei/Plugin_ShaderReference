@@ -20,6 +20,7 @@ Shader "ShaderReference/Template/LitOpaque"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
+            //顶点着色器输入结构体
             struct Attributes
             {
                 float4 positionOS   : POSITION;
@@ -28,6 +29,7 @@ Shader "ShaderReference/Template/LitOpaque"
                 float3 color        : COLOR;
                 float2 texcoord     : TEXCOORD;
             };
+            //顶点着色器输出结构体
             struct Varyings
             {
                 float4 positionHCS  : SV_POSITION;
@@ -45,6 +47,7 @@ Shader "ShaderReference/Template/LitOpaque"
                 float4 _BaseMap_ST;
             CBUFFER_END
 
+            //顶点着色器
             Varyings vert (Attributes v)
             {
                 Varyings o = (Varyings) 0;
@@ -64,6 +67,7 @@ Shader "ShaderReference/Template/LitOpaque"
                 return o;
             }
 
+            //像素着色器
             half4 frag (Varyings i) : SV_Target
             {
                 half4 FinalColor;
