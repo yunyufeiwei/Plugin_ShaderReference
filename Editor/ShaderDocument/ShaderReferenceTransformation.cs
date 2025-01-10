@@ -109,6 +109,20 @@ namespace yuxuetian
                                                   "\tsin(θ), cos(θ), 0, 0,\n" +
                                                   "\t0, 0, 1, 0,\n" +
                                                   "\t0, 0, 0, 1);");
+                _reference.DrawContent("旋转矩阵(任意轴)","float3 Unity_RotateAboutAxis_Radians_float(float3 In, float3 Axis, float Rotation)\n" +
+                                                   "{\n    " +
+                                                   "\tfloat s = sin(Rotation);\n    " +
+                                                   "\tfloat c = cos(Rotation);\n    " +
+                                                   "\tfloat one_minus_c = 1.0 - c;\n    " +
+                                                   "\tAxis = normalize(Axis);\n    " +
+                                                   "\tfloat3x3 rot_mat =\n" +
+                                                   "\t{\n            " +
+                                                   "one_minus_c * Axis.x * Axis.x + c, one_minus_c * Axis.x * Axis.y - Axis.z * s, one_minus_c * Axis.z * Axis.x + Axis.y * s,\n            " +
+                                                   "one_minus_c * Axis.x * Axis.y + Axis.z * s, one_minus_c * Axis.y * Axis.y + c, one_minus_c * Axis.y * Axis.z - Axis.x * s,\n            " +
+                                                   "one_minus_c * Axis.z * Axis.x - Axis.y * s, one_minus_c * Axis.y * Axis.z + Axis.x * s, one_minus_c * Axis.z * Axis.z + c \n" +
+                                                   "\t};\n    " +
+                                                   "return  mul(rot_mat,  In);\n" +
+                                                   "}");
             }
         }
 
