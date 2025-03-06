@@ -93,18 +93,18 @@ namespace yuxuetian
             "Property(属性说明)" , 
             "Semantics(语义说明)",
             "Tags(标签说明)",
-            "Render State(渲染状态)",
+            "RenderState(渲染状态)",
             "Pragma(编译指令)",
             "Transformation(变换)",
             "ShaderLibrary(库文件引用)",
             "Build-In Variables(内置变量)",
             "Predefined Macros(预定义宏)",
             "Platform Difference(平台差异)",
-            "Math(数学)",
             "LightingMode(光照模型)",
             "TextureSampler(纹理采样)",
             "Algorithm(常用算法)",
             "ColorBlendMode(颜色混合)",
+            "MathFunction(数学函数)",
             "SubstancePainter",
             "StudyWebsite(学习网址)",
             "MathGraphical学图形函数)",
@@ -122,11 +122,11 @@ namespace yuxuetian
         private ShaderReferenceBuildInVariables _buildInVariables;
         private ShaderReferencePredefinedMacros _predefinedMacros;
         private ShaderReferencePlatformDifferences _platformDifferences;
-        private ShaderReferenceMath _math;
         private ShaderReferenceLighting _lighting;
         private ShaderReferenceTextureSampler _textureSampler;
         private ShaderReferenceAlgorithm _algorithm;
         private ShaderReferenceColorBlendMode _colorBlendMode;
+        private ShaderReferenceMath _mathFunction;
         private ShaderReferenceSubstancePainter _substancePainter;
         private ShaderReferenceStudyWebsite _studyWebsite;
         private ShaderReferenceMathGraphical _mathGraphical;
@@ -176,11 +176,11 @@ namespace yuxuetian
             _buildInVariables = ScriptableObject.CreateInstance<ShaderReferenceBuildInVariables>();
             _predefinedMacros = ScriptableObject.CreateInstance<ShaderReferencePredefinedMacros>();
             _platformDifferences = ScriptableObject.CreateInstance<ShaderReferencePlatformDifferences>();
-            _math = ScriptableObject.CreateInstance<ShaderReferenceMath>();
             _lighting = ScriptableObject.CreateInstance<ShaderReferenceLighting>();
             _textureSampler = ScriptableObject.CreateInstance<ShaderReferenceTextureSampler>();
             _algorithm = ScriptableObject.CreateInstance<ShaderReferenceAlgorithm>();
             _colorBlendMode = ScriptableObject.CreateInstance<ShaderReferenceColorBlendMode>();
+            _mathFunction = ScriptableObject.CreateInstance<ShaderReferenceMath>();
             _substancePainter = ScriptableObject.CreateInstance<ShaderReferenceSubstancePainter>();
             _studyWebsite = ScriptableObject.CreateInstance<ShaderReferenceStudyWebsite>();
             _mathGraphical = ScriptableObject.CreateInstance<ShaderReferenceMathGraphical>();
@@ -449,15 +449,6 @@ namespace yuxuetian
                 case 11:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
-                    _math.DrawTitleMathFunction();
-                    _isFoldMathFunction = EditorGUILayout.Foldout(_isFoldMathFunction, "MathFunction(数学函数)");
-                    _math.DrawContentMathFunction(_isFoldMathFunction);
-
-                    EditorGUILayout.EndScrollView();
-                    break;
-                case 12:
-                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-                    
                     _lighting.DrawTitleLightModeInfo();
                     _lighting.DrawContentLightModelInfo();
                     
@@ -498,7 +489,7 @@ namespace yuxuetian
                     
                     EditorGUILayout.EndScrollView();
                     break;
-                case 13:
+                case 12:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _textureSampler.DrawTitleTextureSampler();
@@ -511,7 +502,7 @@ namespace yuxuetian
                     
                     EditorGUILayout.EndScrollView();
                     break;
-                case 14:
+                case 13:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _algorithm.DrawTitleAlgorithmVertex();
@@ -544,12 +535,21 @@ namespace yuxuetian
                     
                     EditorGUILayout.EndScrollView();
                     break;
-                case 15:
+                case 14:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _colorBlendMode.DrawTitleColorBlendMode();
                     _colorBlendMode.DrawContentColorBlendMode();
                     
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 15:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
+                    _mathFunction.DrawTitleMathFunction();
+                    _isFoldMathFunction = EditorGUILayout.Foldout(_isFoldMathFunction, "MathFunction(数学函数)");
+                    _mathFunction.DrawContentMathFunction(_isFoldMathFunction);
+
                     EditorGUILayout.EndScrollView();
                     break;
                 case 16:
