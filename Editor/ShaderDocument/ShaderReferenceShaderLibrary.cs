@@ -2,9 +2,29 @@ using UnityEditor;
 
 namespace yuxuetian
 {
-    public class ShaderReferenceOther : EditorWindow
+    public class ShaderReferenceShaderLibrary : EditorWindow
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
+
+        public void DrawTitleShaderLibrary()
+        {
+            _reference.DrawTitle("ShaderLibrary");
+        }
+
+        public void DrawContentShaderLibrary(bool isFold)
+        {
+            if (isFold)
+            {
+                _reference.DrawContent("#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl\"\n" +
+                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\"\n" + 
+                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl\"");
+                _reference.DrawContent("#include \"XXX.hlsl\"\n", "引入自定义的hlsl文件\n" +
+                                       "方案一：绝对路径，Asset/XX/xx.hlsl \n" +
+                                       "方案二：相对路径，同层级的话使用./xx.hlsl.     上一层级使用../xx.hlsl.       上层级的同级目录下使用../xx/xx.hlsl");
+            }
+        }
 
         public void DrawTitleOther()
         {
@@ -15,14 +35,9 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl\"\n" +
-                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl\"\n" +
-                                       "#include \"Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl\"\n" +
-                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\"\n" + 
-                                       "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl\"");
                 _reference.DrawContent("CBUFFER_START(UnityPerMaterial)\n"+
-                                       "CBUFFER_END\n" +
-                                        "","将材质属性面板中的变量定义在这个常量缓冲区中，用于支持SRP Batcher.");
+                                       "CBUFFER_END\n" ,"将材质属性面板中的变量定义在这个常量缓冲区中，用于支持SRP Batcher.\n" +
+                                       "GlobalProperty(全局属性)不能放在CBUFFER里面，否则会破坏SRPBatch机制，应该直接放置该代码片段之外。");
                 _reference.DrawContent("HLSLPROGRAM\n"+
                                        "ENDHLSL\n"+
                                        "", "HLSL代码的开始与结束.");

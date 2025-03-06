@@ -22,18 +22,19 @@ namespace yuxuetian
                 _reference.DrawContent("_Color(\"Color\",Color) = (1,1,1,1)","类型：颜色\n说明：用来表示颜色，通常是四维.");
                 _reference.DrawContent("_Vector(\"Vector\",Vector) = (1,1,1,1)","类型：向量\n说明：四维向量，在Property中无法定义二维或者三维向量，只能定义四维向量.");
             
-                _reference.DrawContent("_BaseMap (\"BaseMap\", 2D) = \"white\" {}","类型：2D纹理\n说明：默认值有white、black、gray、bump以及空，空就是white");
+                _reference.DrawContent("_BaseMap (\"BaseMap\", 2D) = \"white\" {}","类型：2D纹理\n说明：默认值有white、black、gray、bump以及空，空就是white\n" +"\n"+
+                                       "TEXTURE2D(_BaseMap);        SAMPLER(sampler_BaseMap);\n" +
+                                       "half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap , i.uv);");
                 _reference.DrawContent("_BaseMapArray(\"BaseMapArray\",2DArray) = \"white\"{}","类型：2D数组纹理\n"+
                                          "说明：默认值有white、black、gray、bump以及空，空就是white，仅支持DX10、OpenGL3.0、Metal及以上版本\n" + "\n"+
                                          "TEXTURE2D_ARRAY(_BaseMapArray);     SAMPLER(sampler_BaseMapArray);\n"+
                                          "half4 baseMapArray = SAMPLE_TEXTURE2D_ARRAY(_BaseMapArray , sampler_BaseMapArray , i.uv , 0);");
-                _reference.DrawContent("_Cube(\"Cube\",Cube) = \"_skybox\"{}","类型：立方体贴图\n说明：类似天空球一样的纹理，默认使用\"_skybox{}\"\n" + "\n" + 
-                                         "TEXTURECUBE(_Cube);    SAMPLER(sampler_Cube);\n"+
-                                         "half4 cubeMap = SAMPLE_TEXTURECUBE(_Cube,sampler_Cube,reflexDir);");
                 _reference.DrawContent("_3DTexture(\"3DTexture\",3D) = \"white\"{}","类型：3D纹理，通常用作着色器的查找表，或用于表示体积数据。\n说明："+"\n" + 
-                                         "TEXTURE3D(_3DTexture);    SAMPLER(sampler_3DTexture);");
+                                       "TEXTURE3D(_3DTexture);    SAMPLER(sampler_3DTexture);");
+                _reference.DrawContent("_Cube(\"Cube\",Cube) = \"_skybox\"{}","类型：立方体贴图\n说明：类似天空球一样的纹理，默认使用\"_skybox{}\"\n" + "\n" + 
+                                         "TEXTURECUBE(_Cube);       SAMPLER(sampler_Cube);\n"+
+                                         "half4 cubeMap = SAMPLE_TEXTURECUBE(_Cube,sampler_Cube,reflexDir);");
             }
-            
         }
 
         public void DrawTitleAttribute()

@@ -64,7 +64,6 @@ namespace yuxuetian
         {
             _reference.DrawTitle("Shader Lab");
         }
-
         public void DrawContentShaderLab(bool isFold)
         {
             if (isFold)
@@ -78,9 +77,9 @@ namespace yuxuetian
                 _reference.DrawContent("3.透视除法","齐次裁剪空间做透视除法(clip.xyzw/clip.w),变换到归一化设备坐标NDC.");
                 _reference.DrawContent("4.视口变换","从NDC坐标变换到屏幕坐标.");
                 _reference.DrawContent("5.frag(片段着色器)","用从顶点着色器的输出当做输入进行逐片段的颜色计算并输出.");
-                
             }
         }
+
     }
 }
 

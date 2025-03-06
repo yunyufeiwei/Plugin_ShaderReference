@@ -6,6 +6,23 @@ namespace yuxuetian
     {
         private ShaderReferenceUtil _reference = new ShaderReferenceUtil();
 
+        public void DrawTitleBranch()
+        {
+            _reference.DrawTitle("Branch(流程控制)");
+        }
+
+        public void DrawContentBranch(bool isFold)
+        {
+            if (isFold)
+            {
+                _reference.DrawContent("#define UNITY_BRANCH        [branch]", "添加在if语句上面,表示此语句会根据判断只执行符合条件的代码，有跳转指令.");
+                _reference.DrawContent("#define UNITY_FLATTEN       [flatten]", "添加在if语句上面,表示此语句会执行全部代码,然后根据条件来选择某个具体的结果,没有跳转指令.");
+                _reference.DrawContent("#define UNITY_UNROLL        [unroll]", "添加在for语句上面,表示此循环在编绎时会展开所有循环代码，以必竟for循环中的跳转指令,会产生较多的编绎代码.");
+                _reference.DrawContent("#define UNITY_UNROLLX(_x)   [unroll(_x)]", "添加在for语句上面,功能同上，同时可以指定具体的展开次数.");
+                _reference.DrawContent("#define UNITY_LOOP          [loop]", "添加在for语句上面,表示此循环不可展开，正常执行跳转."); 
+            }
+        }
+        
         public void DrawTitleTargetPlatform()
         {
             _reference.DrawTitle("TargetPlatform");
@@ -25,23 +42,6 @@ namespace yuxuetian
                 _reference.DrawContent("SHADER_API_PS4", "PS4平台,SHADER_API_PSSL同时也会被定义");
                 _reference.DrawContent("SHADER_API_XBOXONE", "Xbox One");
                 _reference.DrawContent("SHADER_API_MOBILE", "所有移动平台(GLES/GLES3/METAL)");
-            }
-        }
-
-        public void DrawTitleBranch()
-        {
-            _reference.DrawTitle("Branch(流程控制)");
-        }
-
-        public void DrawContentBranch(bool isFold)
-        {
-            if (isFold)
-            {
-                _reference.DrawContent("#define UNITY_BRANCH        [branch]", "添加在if语句上面,表示此语句会根据判断只执行符合条件的代码，有跳转指令.");
-                _reference.DrawContent("#define UNITY_FLATTEN       [flatten]", "添加在if语句上面,表示此语句会执行全部代码,然后根据条件来选择某个具体的结果,没有跳转指令.");
-                _reference.DrawContent("#define UNITY_UNROLL        [unroll]", "添加在for语句上面,表示此循环在编绎时会展开所有循环代码，以必竟for循环中的跳转指令,会产生较多的编绎代码.");
-                _reference.DrawContent("#define UNITY_UNROLLX(_x)   [unroll(_x)]", "添加在for语句上面,功能同上，同时可以指定具体的展开次数.");
-                _reference.DrawContent("#define UNITY_LOOP          [loop]", "添加在for语句上面,表示此循环不可展开，正常执行跳转."); 
             }
         }
 

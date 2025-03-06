@@ -20,6 +20,15 @@ namespace yuxuetian
             }
         }
 
+        public void DrawContentPragmaMultiCompile(bool isFold)
+        {
+            if (isFold)
+            {
+                _reference.DrawContent("#pragma multi_compile_fog", "雾类型定义\nFOG_EXP FOG_EXP2 FOG_LINEAR");
+                _reference.DrawContent("#pragma multi_compile _ _FORWARD_PLUS", "该关键字用来支持Shader可以在Forward+渲染管线上运行");
+            }
+        }
+
         public void DrawTitletPragmaTarget()
         {
             _reference.DrawTitle("Target","https://docs.unity3d.com/cn/2023.2/Manual/SL-ShaderCompileTargets.html");
@@ -29,7 +38,7 @@ namespace yuxuetian
         {
             if (isFold)
             {
-                _reference.DrawContent("● #pragma target 2.0：\n"+
+                _reference.DrawContent(  "● #pragma target 2.0：\n"+
                                          "● #pragma target 2.5: derivatives(衍生品)\n" +
                                          "● #pragma target 3.0: 2.5 + interpolators 10(内插器) + samplelod + fragcoord\n" + 
                                          "● #pragma target 3.5: (相当于OpenGL ES3.0): 3.0 + interpolators15 + mrt4 + integers + 2darray + instancing\n" +
@@ -96,10 +105,10 @@ namespace yuxuetian
             if (isFold)
             {
                 _reference.DrawContent("#pragma prefer_hlslcc gles", "在OpenGL ES2.0中使用HLSLcc编译器,目前除了OpenGL ES2.0全都默认使用HLSLcc编译器.");
-                _reference.DrawContent("#include \"XXX.hlsl\"", "引入hlsl文件");
+                
                 _reference.DrawContent("#include_with_pragmas \"XXX.hlsl\"", "引入hlsl文件,同时也会使用hlsl文件中的#pragma指令");
                 _reference.DrawContent("#pragma editor_sync_compilation", "强制某个Shader以同步的方式进行编绎(当此Shader的某个变体被第一次渲染时，在还没有编绎完成前不会渲染出来;如果不加此指令则会先用一个青色的临时占位进行渲染显示。)");
-                _reference.DrawContent("#pragma multi_compile_fog", "雾类型定义\nFOG_EXP FOG_EXP2 FOG_LINEAR");
+                
                 _reference.DrawContent("#pragma fragmentoption ARB_precision_hint_fastest", "最快的,意思就是会用低精度(一般是指fp16),以提升片段着色器的运行速度,减少时间.");
                 _reference.DrawContent("#pragma fragmentoption ARB_precision_hint_nicest", "最佳的,会用高精度(一般是指fp32),可能会降低运行速度,增加时间.");
                 _reference.DrawContent("#pragma enable_d3d11_debug_symbols", "开启d3d11调试，加此命令后相关的名称与代码不会被剔除，便于在调试工具中进行查看分析");

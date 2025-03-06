@@ -38,27 +38,23 @@ Shader "ShaderReference/Template/UnlitOpaque"
                 float4 _BaseMap_ST;
             CBUFFER_END
 
-            //顶点着色器
             Varyings vert (Attributes v)
             {
                 Varyings o = (Varyings) 0;
+                o.uv = TRANSFORM_TEX(v.texcoord, _BaseMap);
+                
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(v.positionOS.xyz);
 
                 o.positionHCS = vertexInput.positionCS;
-                
-                o.uv = TRANSFORM_TEX(v.texcoord, _BaseMap);
                 return o;
             }
 
-            //像素着色器
             half4 frag (Varyings i) : SV_Target
             {
                 half4 FinalColor;
-
                 half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap , i.uv);
 
                 FinalColor = baseMap * _Color;
-                
                 return FinalColor;
             }
             ENDHLSL

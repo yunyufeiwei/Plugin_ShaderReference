@@ -36,6 +36,7 @@ namespace yuxuetian
         private bool _isFoldRenderStateBlend = true;
         //编译指令
         private bool _isFoldPragma = true;
+        private bool _isFoldPragmaMultiCompile = true;
         private bool _isFoldPragmaTarget = true;
         private bool _isFoldPragmaRequire = true;
         private bool _isFoldPragmaShaderVariant = true;
@@ -45,6 +46,7 @@ namespace yuxuetian
         private bool _isFoldTransformationFunction = true;
         private bool _isFoldTransformationBaseTransformationMatrix = true;
         //其它
+        private bool _isFoldShaderLibrary = true;
         private bool _isFoldOther = true;
         //内置变量
         private bool _isFoldBuildInVariablesCameraAndScreen = true;
@@ -94,7 +96,7 @@ namespace yuxuetian
             "Render State(渲染状态)",
             "Pragma(编译指令)",
             "Transformation(变换)",
-            "Other(其它)",
+            "ShaderLibrary(库文件引用)",
             "Build-In Variables(内置变量)",
             "Predefined Macros(预定义宏)",
             "Platform Difference(平台差异)",
@@ -116,7 +118,7 @@ namespace yuxuetian
         private ShaderReferenceRenderState _renderState;
         private ShaderReferencePragma _pragma;
         private ShaderReferenceTransformation _transformation;
-        private ShaderReferenceOther _other;
+        private ShaderReferenceShaderLibrary _ShaderLibrary;
         private ShaderReferenceBuildInVariables _buildInVariables;
         private ShaderReferencePredefinedMacros _predefinedMacros;
         private ShaderReferencePlatformDifferences _platformDifferences;
@@ -170,7 +172,7 @@ namespace yuxuetian
             _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
             _pragma = ScriptableObject.CreateInstance<ShaderReferencePragma>();
             _transformation = ScriptableObject.CreateInstance<ShaderReferenceTransformation>();
-            _other = ScriptableObject.CreateInstance<ShaderReferenceOther>();
+            _ShaderLibrary = ScriptableObject.CreateInstance<ShaderReferenceShaderLibrary>();
             _buildInVariables = ScriptableObject.CreateInstance<ShaderReferenceBuildInVariables>();
             _predefinedMacros = ScriptableObject.CreateInstance<ShaderReferencePredefinedMacros>();
             _platformDifferences = ScriptableObject.CreateInstance<ShaderReferencePlatformDifferences>();
@@ -241,9 +243,6 @@ namespace yuxuetian
                     _semantics.DrawTitlePixelShading();
                     _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
                     _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
-                    
-                    _semantics.DrawTitleSemanticsWebsite();
-                    _semantics.DrawContentSemanticsWebsite();
                     
                     EditorGUILayout.EndScrollView();
                     break;
@@ -328,6 +327,8 @@ namespace yuxuetian
                     _pragma.DrawTitlePragma();
                     _isFoldPragma = EditorGUILayout.Foldout(_isFoldPragma, "Pragma");
                     _pragma.DrawContentPragma(_isFoldPragma);
+                    _isFoldPragmaMultiCompile = EditorGUILayout.Foldout(_isFoldPragmaMultiCompile, "MultiCompile");
+                    _pragma.DrawContentPragmaMultiCompile(_isFoldPragmaMultiCompile);
                     
                     _pragma.DrawTitletPragmaTarget();
                     _isFoldPragmaTarget = EditorGUILayout.Foldout(_isFoldPragmaTarget, "Target(目标)");
@@ -371,9 +372,13 @@ namespace yuxuetian
                 case 7:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
-                    _other.DrawTitleOther();
+                    _ShaderLibrary.DrawTitleShaderLibrary();
+                    _isFoldShaderLibrary = EditorGUILayout.Foldout(_isFoldShaderLibrary, "ShaderLibrary");
+                    _ShaderLibrary.DrawContentShaderLibrary(_isFoldShaderLibrary);
+                    
+                    _ShaderLibrary.DrawTitleOther();
                     _isFoldOther = EditorGUILayout.Foldout(_isFoldOther, "Other");
-                    _other.DrawContentOther(_isFoldOther);
+                    _ShaderLibrary.DrawContentOther(_isFoldOther);
                     
                     EditorGUILayout.EndScrollView();
                     break;
@@ -400,13 +405,13 @@ namespace yuxuetian
                 case 9:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
-                    _predefinedMacros.DrawTitleTargetPlatform();
-                    _isFoldPredefinedMacrosTargetPlatform = EditorGUILayout.Foldout(_isFoldPredefinedMacrosTargetPlatform, "TargetPlatform");
-                    _predefinedMacros.DrawContentGargetPlatform(_isFoldPredefinedMacrosTargetPlatform);
-                    
                     _predefinedMacros.DrawTitleBranch();
                     _isFoldPredefineMacrosBranch = EditorGUILayout.Foldout(_isFoldPredefineMacrosBranch, "Branch");
                     _predefinedMacros.DrawContentBranch(_isFoldPredefineMacrosBranch);
+                    
+                    _predefinedMacros.DrawTitleTargetPlatform();
+                    _isFoldPredefinedMacrosTargetPlatform = EditorGUILayout.Foldout(_isFoldPredefinedMacrosTargetPlatform, "TargetPlatform");
+                    _predefinedMacros.DrawContentGargetPlatform(_isFoldPredefinedMacrosTargetPlatform);
                     
                     _predefinedMacros.DrawTitleShaderTargetModel();
                     _predefinedMacros.DrawContentShaderTargetModel();
@@ -506,7 +511,7 @@ namespace yuxuetian
                     
                     EditorGUILayout.EndScrollView();
                     break;
-                case 14 :
+                case 14:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _algorithm.DrawTitleAlgorithmVertex();
@@ -587,7 +592,7 @@ namespace yuxuetian
                     
                     EditorGUILayout.EndScrollView();
                     break;
-                case 18 :
+                case 18:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _mathGraphical.DrawTitle();
