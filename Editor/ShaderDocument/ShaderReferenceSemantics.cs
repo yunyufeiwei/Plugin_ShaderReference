@@ -53,12 +53,20 @@ namespace yuxuetian
                                        "    return FinalColor;\n" +
                                        "}","常用的像素着色器语义，这里的sv_Target语义等价于COLOR");
                 
-                _reference.DrawContent("struct FragmentOutput\n" +
+                _reference.DrawContent("如果要输出多个语义时，可是使用结构体的形式来编写。首先定义像素着色器输出结构体,然后在FragmentOutput frag(Varyings i)像素着色器输出中实现。",
+                                       "struct FragmentOutput\n" +
                                        "{\n" +
                                        "    half4 color : SV_Target;\n" +
                                        "    half4 depth : SV_Depth;\n" +
                                        "    half4 vFace : SV_IsFrontFace;\n" +
-                                       "}","定义像素着色器输出结构体,然后在FragmentOutput frag(Varyings i)像素着色器输出中实现。\n");
+                                       "}\n" +
+                                       "FragmentOutput frag (Varyings i) \n" +
+                                       "{\n" +
+                                       "    FragmentOutput o;\n" +
+                                       "    o.color = _Color * i.color;\n" +
+                                       "    o.depth = i.depth  -  _DepthBias;\n" +
+                                       "    return o;\n" +
+                                       "}");
                 _reference.DrawContentSite("语义网址：","https://learn.microsoft.com/zh-cn/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics?redirectedfrom=MSDN#vertex-shader-semantics");
             }
         }
