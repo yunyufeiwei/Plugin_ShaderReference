@@ -21,7 +21,10 @@ namespace yuxuetian
             if (isFold)
             {
                 _reference.DrawContent("Cull Back | Front | Off" , "[Enum(UnityEngine.Rendering.CullMode)]_Cull(\"Cull\",Float) = 0\n" + 
-                                         "背面剔除,默认值为Back。\nBack：表示剔除背面，也就是显示正面，这也是最常用的设置。\nFront：表示剔除前面，只显示背面。\nOff:表示关闭剔除，也就是正反面都渲染。");
+                                         "背面剔除,默认值为Back。\n" +
+                                         "Back：\t表示剔除背面，也就是显示正面，这也是最常用的设置。\n" +
+                                         "Front：\t表示剔除前面，只显示背面。\n" +
+                                         "Off:      \t表示关闭剔除，也就是正反面都渲染。");
             }
         }
 
@@ -47,13 +50,13 @@ namespace yuxuetian
                                          "\n    Fail [_Fail]" +
                                          "\n    ZFail [_ZFail]" +
                                          "\n}" +
-                                         "\nRef:\t设定的参考值,这个值将用来与模板缓冲中的值进行比较.取值范围位为0-255的整数." +
+                                         "\nRef:    \t设定的参考值,这个值将用来与模板缓冲中的值进行比较.取值范围位为0-255的整数." +
                                          "\nReadMask :\tReadMask的值将和Ref的值以及模板缓冲中的值进行按位与（&）操作,取值范围也是0-255的整数,默认值为255(二进制位11111111),即读取的时候不对Ref的值和模板缓冲中的值产生修改,读取的还是原始值." +
                                          "\nWriteMask:\tWriteMask的值是当写入模板缓冲时进行的按位与操作,取值范围是0-255的整数,默认值也是255,即不做任何修改." +
                                          "\nComp:\t定义Ref与模板缓冲中的值比较的操作函数,默认值为always." +
-                                         "\nPass:\t当模板测试（和深度测试）通过时,则根据（stencilOperation值）对模板缓冲值进行处理,默认值为keep." +
-                                         "\nFail:\t当模板测试（和深度测试）失败时,则根据（stencilOperation值）对模板缓冲值进行处理，默认值为keep." +
-                                         "\nZFail:\t当模板测试通过而深度测试失败时,则根据（stencilOperation值）对模板缓冲值进行处理，默认值为keep.");
+                                         "\nPass:   \t当模板测试（和深度测试）通过时,则根据（stencilOperation值）对模板缓冲值进行处理,默认值为keep." +
+                                         "\nFail:       \t当模板测试（和深度测试）失败时,则根据（stencilOperation值）对模板缓冲值进行处理，默认值为keep." +
+                                         "\nZFail:  \t当模板测试通过而深度测试失败时,则根据（stencilOperation值）对模板缓冲值进行处理，默认值为keep.");
                 _reference.DrawContent("Comp（比较操作）",
                                  "\nLess：\t相当于“<”操作，即仅当左边<右边，模板测试通过，渲染像素." +
                                         "\nGreater：\t相当于“>”操作，即仅当左边>右边，模板测试通过，渲染像素." +
