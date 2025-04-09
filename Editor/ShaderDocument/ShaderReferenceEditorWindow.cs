@@ -11,6 +11,12 @@ namespace yuxuetian
         private bool _isFoldPipelineGeometryStage = true;
         private bool _isFoldPipelineRasterizerStage = true;
         private bool _isFoldPipelineShaderLab = true;
+        //渲染状态
+        private bool _isFoldRenderStateCull = true;
+        private bool _isFoldRenderStateStencilTest = true;
+        private bool _isFoldRenderStateDepthTest = true;
+        private bool _isFoldRenderStateColorMask = true;
+        private bool _isFoldRenderStateBlend = true;
         //属性
         private bool _isFoldProperty = true;
         private bool _isFoldPropertyAttribute = true;
@@ -28,12 +34,6 @@ namespace yuxuetian
         private bool _isFoldTagPreviewType = true;
         private bool _isFoldTagCanUseSpriteAtlas = true;
         private bool _isFoldTagPerformanceChecks = true;
-        //渲染状态
-        private bool _isFoldRenderStateCull = true;
-        private bool _isFoldRenderStateStencilTest = true;
-        private bool _isFoldRenderStateDepthTest = true;
-        private bool _isFoldRenderStateColorMask = true;
-        private bool _isFoldRenderStateBlend = true;
         //编译指令
         private bool _isFoldPragma = true;
         private bool _isFoldPragmaMultiCompile = true;
@@ -90,10 +90,10 @@ namespace yuxuetian
         private string[] _tabName = new string[]
         {
             "Pipeline(渲染管线)", 
+            "RenderState(渲染状态)",
             "Property(属性说明)" , 
             "Semantics(语义说明)",
             "Tags(标签说明)",
-            "RenderState(渲染状态)",
             "Pragma(编译指令)",
             "Transformation(变换)",
             "ShaderLibrary(库文件引用)",
@@ -112,10 +112,10 @@ namespace yuxuetian
         };
        
         private ShaderReferencePipeline _pipeline;
+        private ShaderReferenceRenderState _renderState;
         private ShaderReferenceProperty _property;
         private ShaderReferenceSemantics _semantics;
         private ShaderReferenceTags _tags;
-        private ShaderReferenceRenderState _renderState;
         private ShaderReferencePragma _pragma;
         private ShaderReferenceTransformation _transformation;
         private ShaderReferenceShaderLibrary _ShaderLibrary;
@@ -136,8 +136,30 @@ namespace yuxuetian
         [MenuItem("ShaderTool/ShadserReference #R" ,false, 101)]
         public static void ShowWindow()
         {
-            EditorWindow window = GetWindow<ShaderReferenceEditorWindow>();
-            window.titleContent = new GUIContent("Shader参考手册");
+            var windows = Resources.FindObjectsOfTypeAll<ShaderReferenceEditorWindow>();
+    
+            if (windows.Length > 0)
+            {
+                // 如果窗口已存在
+                var window = windows[0];
+        
+                // 检查是否是当前焦点窗口
+                if (window == EditorWindow.focusedWindow)
+                {
+                    window.Close();
+                }
+                else
+                {
+                    window.Focus();
+                }
+            }
+            else
+            {
+                // 创建新窗口
+                var window = CreateInstance<ShaderReferenceEditorWindow>();
+                window.titleContent = new GUIContent("Shader参考手册");
+                window.Show();
+            }
         }
 
         private void OnGUI()
@@ -150,7 +172,13 @@ namespace yuxuetian
             
             //左侧区域绘制
             EditorGUILayout.BeginVertical(EditorStyles.helpBox , GUILayout.MaxWidth(width) , GUILayout.MaxHeight(height));
-            _selectedTabID = GUILayout.SelectionGrid(_selectedTabID, _tabName, 1);  
+            // 保存原始对齐方式
+            var originalAlignment = GUI.skin.button.alignment;
+            // 强制设置左对齐
+            GUI.skin.button.alignment = TextAnchor.MiddleLeft;
+            _selectedTabID = GUILayout.SelectionGrid(_selectedTabID, _tabName, 1); 
+            // 恢复原始对齐方式
+            GUI.skin.button.alignment = originalAlignment;
             EditorGUILayout.EndVertical();
 
             //右侧区域绘制
@@ -166,10 +194,10 @@ namespace yuxuetian
             _selectedTabID = EditorPrefs.HasKey("SelectedTabID") ? EditorPrefs.GetInt("SelectedTabID") : 0;
             
             _pipeline = ScriptableObject.CreateInstance<ShaderReferencePipeline>();
+            _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
             _property = ScriptableObject.CreateInstance<ShaderReferenceProperty>();
             _semantics = ScriptableObject.CreateInstance<ShaderReferenceSemantics>();
             _tags = ScriptableObject.CreateInstance<ShaderReferenceTags>();
-            _renderState = ScriptableObject.CreateInstance<ShaderReferenceRenderState>();
             _pragma = ScriptableObject.CreateInstance<ShaderReferencePragma>();
             _transformation = ScriptableObject.CreateInstance<ShaderReferenceTransformation>();
             _ShaderLibrary = ScriptableObject.CreateInstance<ShaderReferenceShaderLibrary>();
@@ -219,6 +247,34 @@ namespace yuxuetian
                     break;
                 case 1:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+
+                    _renderState.DrawTitleCull();
+                    _isFoldRenderStateCull = EditorGUILayout.Foldout(_isFoldRenderStateCull, "Cull");
+                    _renderState.DrawContentCull(_isFoldRenderStateCull);
+                    
+                    _renderState.DrawTitleStencilTest();
+                    _isFoldRenderStateStencilTest = EditorGUILayout.Foldout(_isFoldRenderStateStencilTest, "Stencil Test");
+                    _renderState.DrawContentStencilTest(_isFoldRenderStateStencilTest);
+                    
+                    _renderState.DrawTitleDepthTest();
+                    _isFoldRenderStateDepthTest = EditorGUILayout.Foldout(_isFoldRenderStateDepthTest, "Depth Test");
+                    _renderState.DrawContentDepthTest(_isFoldRenderStateDepthTest);
+                    
+                    _renderState.DrawTitleColorMask();
+                    _isFoldRenderStateColorMask = EditorGUILayout.Foldout(_isFoldRenderStateColorMask, "ColorMask");
+                    _renderState.DrawContentColorMask(_isFoldRenderStateColorMask);
+                    
+                    _renderState.DrawTitleBlend();
+                    _isFoldRenderStateBlend = EditorGUILayout.Foldout(_isFoldRenderStateBlend, "Blend");
+                    _renderState.DrawContentBlend(_isFoldRenderStateBlend);
+                    
+                    _renderState.DrawTitleOther();
+                    _renderState.DrawContentOther();
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 2:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
                     _property.DrawTitleProperty();
                     _isFoldProperty = EditorGUILayout.Foldout(_isFoldProperty, "属性");
@@ -227,22 +283,6 @@ namespace yuxuetian
                     _property.DrawTitleAttribute();
                     _isFoldPropertyAttribute = EditorGUILayout.Foldout(_isFoldPropertyAttribute, "属性形式");
                     _property.DrawContentAttribute(_isFoldPropertyAttribute);
-                    
-                    EditorGUILayout.EndScrollView();
-                    break;
-                case 2:
-                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-                    _semantics.DrawTitleAttribute();
-                    _isFoldSemanticsAttribute = EditorGUILayout.Foldout(_isFoldSemanticsAttribute, "Attribute");
-                    _semantics.DrawContentAttribute(_isFoldSemanticsAttribute);
-                    
-                    _semantics.DrawTitleVaryings();
-                    _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
-                    _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
-                    
-                    _semantics.DrawTitlePixelShading();
-                    _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
-                    _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
                     
                     EditorGUILayout.EndScrollView();
                     break;
@@ -295,29 +335,17 @@ namespace yuxuetian
                     break;
                 case 4:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-
-                    _renderState.DrawTitleCull();
-                    _isFoldRenderStateCull = EditorGUILayout.Foldout(_isFoldRenderStateCull, "Cull");
-                    _renderState.DrawContentCull(_isFoldRenderStateCull);
+                    _semantics.DrawTitleAttribute();
+                    _isFoldSemanticsAttribute = EditorGUILayout.Foldout(_isFoldSemanticsAttribute, "Attribute");
+                    _semantics.DrawContentAttribute(_isFoldSemanticsAttribute);
                     
-                    _renderState.DrawTitleStencilTest();
-                    _isFoldRenderStateStencilTest = EditorGUILayout.Foldout(_isFoldRenderStateStencilTest, "Stencil Test");
-                    _renderState.DrawContentStencilTest(_isFoldRenderStateStencilTest);
+                    _semantics.DrawTitleVaryings();
+                    _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
+                    _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
                     
-                    _renderState.DrawTitleDepthTest();
-                    _isFoldRenderStateDepthTest = EditorGUILayout.Foldout(_isFoldRenderStateDepthTest, "Depth Test");
-                    _renderState.DrawContentDepthTest(_isFoldRenderStateDepthTest);
-                    
-                    _renderState.DrawTitleColorMask();
-                    _isFoldRenderStateColorMask = EditorGUILayout.Foldout(_isFoldRenderStateColorMask, "ColorMask");
-                    _renderState.DrawContentColorMask(_isFoldRenderStateColorMask);
-                    
-                    _renderState.DrawTitleBlend();
-                    _isFoldRenderStateBlend = EditorGUILayout.Foldout(_isFoldRenderStateBlend, "Blend");
-                    _renderState.DrawContentBlend(_isFoldRenderStateBlend);
-                    
-                    _renderState.DrawTitleOther();
-                    _renderState.DrawContentOther();
+                    _semantics.DrawTitlePixelShading();
+                    _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
+                    _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
                     
                     EditorGUILayout.EndScrollView();
                     break;
