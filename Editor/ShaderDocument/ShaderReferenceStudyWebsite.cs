@@ -47,6 +47,11 @@ namespace yuxuetian
             _reference.DrawContentSite("有向距离场","https://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/#signed-distance-functions");
             _reference.DrawContentSite("延迟渲染与前向渲染","https://www.3dgep.com/forward-plus/");
             _reference.DrawContentSite("光照与阴影","https://ciechanow.ski/lights-and-shadows/");
+            _reference.DrawContentSite("Shader演示案例","http://shaderslab.com/shaders.html");
+            _reference.DrawContentSite("BookOfShader(Fragment算法)","https://thebookofshaders.com/10/");
+            _reference.DrawContentSite("3D图形编程","https://paroj.github.io/gltut/");
+            _reference.DrawContentSite("CG编程","https://en.wikibooks.org/wiki/Cg_Programming/Unity");
+            
         }
 
         public void DrawTitleStudyWebsityCalculatorTools()
@@ -63,6 +68,8 @@ namespace yuxuetian
             _reference.DrawContentSite("Symbolab计算器", "https://www.symbolab.com/graphing-calculator/linear-graph");
             _reference.DrawContentSite("BRDF3D可视化","https://patapom.com/topics/WebGL/BRDF/");
             _reference.DrawContentSite("二进制计算器","https://tool.oschina.net/hexconvert");
+            _reference.DrawContentSite("ShaderFrog","https://shaderfrog.com/app");
+            _reference.DrawContentSite("Pixel编辑器","http://pixelshaders.com/editor/");
         }
 
         public void DrawTitleOnlinePPT()
