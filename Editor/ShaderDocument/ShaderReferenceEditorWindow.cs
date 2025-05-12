@@ -289,6 +289,23 @@ namespace yuxuetian
                 case 3:
                     _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
                     
+                    _semantics.DrawTitleAttribute();
+                    _isFoldSemanticsAttribute = EditorGUILayout.Foldout(_isFoldSemanticsAttribute, "Attribute");
+                    _semantics.DrawContentAttribute(_isFoldSemanticsAttribute);
+                    
+                    _semantics.DrawTitleVaryings();
+                    _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
+                    _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
+                    
+                    _semantics.DrawTitlePixelShading();
+                    _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
+                    _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
+                    
+                    EditorGUILayout.EndScrollView();
+                    break;
+                case 4:
+                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                    
                     _tags.DrawTitleTag();
                     _tags.DrawContentTag();
                     
@@ -330,22 +347,6 @@ namespace yuxuetian
                     _tags.DrawTitlePerformanceChecks();
                     _isFoldTagPerformanceChecks = EditorGUILayout.Foldout(_isFoldTagPerformanceChecks, "PerformanceChecks");
                     _tags.DrawContentPerformanceChecks(_isFoldTagPerformanceChecks);
-                    
-                    EditorGUILayout.EndScrollView();
-                    break;
-                case 4:
-                    _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
-                    _semantics.DrawTitleAttribute();
-                    _isFoldSemanticsAttribute = EditorGUILayout.Foldout(_isFoldSemanticsAttribute, "Attribute");
-                    _semantics.DrawContentAttribute(_isFoldSemanticsAttribute);
-                    
-                    _semantics.DrawTitleVaryings();
-                    _isFoldSemanticsVaryings = EditorGUILayout.Foldout(_isFoldSemanticsVaryings, "Varying");
-                    _semantics.DrawContentVaryings(_isFoldSemanticsVaryings);
-                    
-                    _semantics.DrawTitlePixelShading();
-                    _isFoldSemanticsPixelShading = EditorGUILayout.Foldout(_isFoldSemanticsPixelShading, "Pixel Shading");
-                    _semantics.DrawContentPixelShading(_isFoldSemanticsPixelShading);
                     
                     EditorGUILayout.EndScrollView();
                     break;
